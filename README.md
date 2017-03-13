@@ -19,6 +19,8 @@ This Requirement Management package provides the ability to handle your requirem
 * Reporting (structure report, priority report, risk report)
 * Requirement Revisions
 
+> This project has been replaced by the [Aras Requirements Management application](http://www.aras.com/applications/requirements-management.aspx).
+
 ## History
 
 Release notes/descriptions for the original project posted on the previous Aras Projects page.
