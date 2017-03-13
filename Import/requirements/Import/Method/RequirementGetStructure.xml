@@ -1,0 +1,25 @@
+﻿<AML>
+ <Item type="Method" id="7D058D6EC9B74760A5D8B28126ED5AF0" action="add">
+  <classification>/*</classification>
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[If Me.GetType() <> "Requirement" Then
+  Return Me.newInnovator().newError("Item of type Requirement required")
+End If
+
+Dim reqId As String = Me.getID()
+If reqId.Length <> 32 Then
+  Return Me.newInnovator().newError("Requirement ID not specified")
+End If
+
+Dim callframe As Item = Me.newItem("SQL", "SQL PROCESS")
+callframe.setProperty("name", "RequirementGetCompleteStructure")
+callframe.setProperty("PROCESS", "CALL")
+callframe.setProperty("ARG1", reqId)
+
+Dim res As Item = callframe.apply()
+
+Return res]]></method_code>
+  <method_type>VB</method_type>
+  <name>RequirementGetStructure</name>
+ </Item>
+</AML>

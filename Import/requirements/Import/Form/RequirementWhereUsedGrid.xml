@@ -1,0 +1,194 @@
+﻿<AML>
+ <Item type="Form" id="84021BFA93FC4EF2A2456B3177E70D91" action="add">
+  <classification>/*</classification>
+  <name>RequirementWhereUsedGrid</name>
+  <stylesheet><![CDATA[../styles/default.css]]></stylesheet>
+  <Relationships>
+   <Item type="Body" id="3B674FBB0BBE42BCB860521046DF1649" action="add">
+    <classification>/*</classification>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="RequirementWhereUsedGrid" type="Form">84021BFA93FC4EF2A2456B3177E70D91</source_id>
+    <Relationships>
+     <Item type="Field" id="D4A7448E0D1B4364853E2B10A96C9057" action="add">
+      <bg_color>#FFFFFF</bg_color>
+      <border_width>0</border_width>
+      <classification>/*</classification>
+      <field_type>html</field_type>
+      <font_color>#000000</font_color>
+      <font_family>arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <html_code><![CDATA[<script>
+// Generic TreeGrid1 - HTML-code
+// this is a skeleton
+// additional functions are need to be loaded from methods attached to the Form's onload event.
+//
+// these must contain these functions:
+//     window.initTreeGridWithData(treeGrid1_Control)
+//     window.getGridToolbarHTML()
+//   ... and all click handler functions named "treeGrid1_XXXX ()"   listed in  this HTML
+//
+//  History:
+//      5-May-2010		Rolf
+//
+// ====================================================================================================================
+var toolbar1_Control = null;
+var treeGrid1_Control = null;
+var treeGrid1_MsgsId;
+var OnLoadMethodsLoaded = false;
+
+top.aras.uiAddConfigLink2Doc4Assembly(document, "TreeTable");
+top.aras.uiAddConfigLink2Doc4Assembly(document, "Toolbar");
+
+function initTree() {
+  if (!window.initTreeGridWithData) {
+	setTimeout('initTree()',10);
+	return;
+  }
+  var res = window.initTreeGridWithData();
+}
+
+function initToolbar() {
+  if (!window.getGridToolbarHTML) {
+	setTimeout('initToolbar()',30);
+	return;
+  }
+  var res = window.getGridToolbarHTML();
+  toolbar1_Control.loadToolbarFromStr(res);
+  toolbar1_Control.show();
+}
+
+onload = function onload_handler() {
+ try { onload1(); } catch (excep) { }  // force load of Fom's 1st method linked to load event
+ try { onload2(); } catch (excep) { }  // force load of Fom's 2nd method linked to load event
+ OnLoadMethodsLoaded = true;
+ 
+ var frameWidth = top.relationships.frames[0].document.body.clientWidth;
+ var frameHeight = top.relationships.frames[0].document.body.clientHeight;
+}
+</script>
+
+<script language="jscript" for="treeGrid1" event="GridStart(isSuccess)">
+		treeGrid1_Control=document.treeGrid1;
+		initTree();
+</script>
+<script language="jscript" for="toolbar1" event="Onload()">
+		toolbar1.setImageBase("../cbin/");
+		toolbar1_Control = document.toolbar1;
+		initToolbar();
+</script>
+<script language="jscript" for="toolbar1" event="Onclick(tbItem)">
+  treeGrid1_onToolbarClick(tbItem);
+</script>
+  <script type="text/javascript" for="treeGrid1" event="GridMenuInit(rowId, col, p)">
+    treeGrid1_onGridClick(rowId, col);
+    treeGrid1_onGridMenuInit(rowId, col, p);;
+  </script>
+  <script type="text/javascript" for="treeGrid1" event="GridMenuClick(m, rowId, col)">
+    treeGrid1_onGridMenuClick(m);
+  </script>
+  <script type="text/javascript" for="treeGrid1" event="GridClick(rowId,col)">
+    treeGrid1_onGridClick(rowId, col);
+  </script>
+  <script language="jscript" for="treeGrid1" event="GridDoubleClick(rowId)">
+    treeGrid1_onGridDoubleClick(rowId);
+  </script>
+  <script type="text/jscript" for="treeGrid1" event="GridEditCell(type, rowID, column)">
+    treeGrid1_onEditCell(type, rowID, column);
+  </script>
+  <script type="text/javascript" for="treeGrid1" event="GridKeyPress(kEv)">
+    treeGrid1_onKeyPressed(kEv);
+</script>
+
+<style>
+   html, body
+    {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      border: none;
+    }
+    .sys_f_container
+    {
+      position:absolute; 
+      top:0px; left:0px;
+      width: 100%;
+      height: 100%;
+    }
+    .sys_f_table
+    {
+      position:absolute; 
+      top:0px; left:0px;
+      width: 100%;
+      height: 100%;
+    }
+    .sys_f_tr
+    {
+      position:absolute; 
+      top:0px; left:0px;
+      width: 100%;
+      height: 100%;
+    }
+    .sys_f_border
+    {
+      width: 100%;
+      height: 100%;
+    }
+</style>
+<table border="0" style="width: 100%; height: 100%; table-layout: fixed;" cellspacing="0" cellpadding="0">
+ <tr style="height: 28px;">
+	<td style="height: 28px;" valign="top">
+	  <comment id="tb_commented">
+			 <object id="toolbar1"
+				style="width:100%;height:100%"
+				classid="../cbin/Toolbar.dll#Aras.Client.Controls.Toolbar" >
+			 </object>
+		</comment>
+	  <script type="text/jscript">
+		 WriteUncommentedObject("tb_commented");
+	  </script>
+	</td>
+ </tr>
+ 
+ <tr class="tr_IE_fix_bug_with_height" >
+      <td style="height:100%;">
+        <comment id="treeGrid1_commented">
+	        <object id="treeGrid1"
+	          style="height: 100%; width: 100%;"
+              classid= "../cbin/TreeTable.dll#Aras.Client.Controls.TreeGridContainer" VIEWASTEXT>
+              <param name='MenuInHeader' value='true'>
+	        </object>
+    		</comment>
+        <script type="text/jscript">
+          WriteUncommentedObject("treeGrid1_commented");
+        </script>
+      </td>
+ </tr>
+</table>]]></html_code>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <name>html_grid1_req_links</name>
+      <sort_order>128</sort_order>
+      <source_id keyed_name="3B674FBB0BBE42BCB860521046DF1649" type="Body">3B674FBB0BBE42BCB860521046DF1649</source_id>
+      <tab_stop>1</tab_stop>
+      <x>0</x>
+      <y>-1</y>
+     </Item>
+    </Relationships>
+   </Item>
+   <Item type="Form Event" id="EC5F4BC9B7424E48996D0C19718C74DB" action="add">
+    <classification>/*</classification>
+    <form_event>onload</form_event>
+    <related_id keyed_name="RequirementWhereUsedGridHandler" type="Method">
+     <Item type="Method" action="get" select="id">
+      <name>RequirementWhereUsedGridHandler</name>
+     </Item>
+    </related_id>
+    <sort_order>1</sort_order>
+    <source_id keyed_name="RequirementWhereUsedGrid" type="Form">84021BFA93FC4EF2A2456B3177E70D91</source_id>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

@@ -1,0 +1,30 @@
+﻿<AML>
+ <Item type="List" id="C5436CDD78C74C4897ACA942D2E7D946" action="add">
+  <classification>/*</classification>
+  <description>Requirement Risk</description>
+  <name>Requirement Risk</name>
+  <Relationships>
+   <Item type="Value" id="8CDADD9EC05F42FDA767DE84883F9067" action="add">
+    <classification>/*</classification>
+    <label xml:lang="en">High</label>
+    <sort_order>1</sort_order>
+    <source_id keyed_name="Requirement Risk" type="List">C5436CDD78C74C4897ACA942D2E7D946</source_id>
+    <value>High</value>
+   </Item>
+   <Item type="Value" id="8712DB7F720D4D9481492FAA0DDA0FB6" action="add">
+    <classification>/*</classification>
+    <label xml:lang="en">Low</label>
+    <sort_order>3</sort_order>
+    <source_id keyed_name="Requirement Risk" type="List">C5436CDD78C74C4897ACA942D2E7D946</source_id>
+    <value>Low</value>
+   </Item>
+  
+   <Item type="Value" id="C8BF19B6B22043F0ABB7AEB461305F30" action="add">
+    <classification>/*</classification>
+    <label xml:lang="en">Medium</label>
+    <sort_order>2</sort_order>
+    <source_id keyed_name="Requirement Risk" type="List">C5436CDD78C74C4897ACA942D2E7D946</source_id>
+    <value>Medium</value>
+   </Item></Relationships>
+ </Item>
+</AML>

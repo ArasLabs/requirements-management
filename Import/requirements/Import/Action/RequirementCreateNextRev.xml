@@ -1,0 +1,16 @@
+﻿<AML>
+ <Item type="Action" id="80D9A1934ABB4827A6573B76FCBFDEAE" action="add">
+  <classification>/*</classification>
+  <item_query>&lt;Item type="{@type}" id="{@id}" levels= "1" action="get" /&gt;</item_query>
+  <label xml:lang="en">Create next Requirement Revision</label>
+  <location>client</location>
+  <method keyed_name="RequirementManualRev" type="Method">
+   <Item type="Method" action="get" select="id">
+    <name>RequirementManualRev</name>
+   </Item>
+  </method>
+  <name>RequirementCreateNextRev</name>
+  <target>none</target>
+  <type>item</type>
+ </Item>
+</AML>

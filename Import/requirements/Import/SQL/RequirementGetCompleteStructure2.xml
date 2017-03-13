@@ -1,0 +1,176 @@
+﻿<AML>
+ <Item type="SQL" id="6B7545CCE24A429ABB311C03049BC52A" action="add">
+  <execution_count>5</execution_count>
+  <execution_flag>immediate</execution_flag>
+  <name>RequirementGetCompleteStructure2</name>
+  <old_name>RequirementGetCompleteStructure2</old_name>
+  <sqlserver_body><![CDATA[CREATE FUNCTION RequirementGetCompleteStructure2 (@reqId char(32))
+RETURNS @REQ_STRUCT TABLE
+ (level INTEGER,
+  id CHAR(32) COLLATE database_default,
+  source_id CHAR(32) COLLATE database_default,
+  related_id CHAR(32) COLLATE database_default)
+  /* 
+    You may add more columns here.
+    If you do so - add the same columns into @CURRENT_REQ_STRUCT and
+    @NEXT_REQ_STRUCT.
+   */
+  
+AS
+BEGIN
+  DECLARE @KNOWN_REQ_STRUCT TABLE(
+    id CHAR(32) COLLATE database_default PRIMARY KEY);
+
+  DECLARE @CURRENT_REQ_STRUCT TABLE(
+    id CHAR(32) COLLATE database_default PRIMARY KEY,
+    source_id CHAR(32) COLLATE database_default,
+    related_id CHAR(32) COLLATE database_default);
+    /* you may add more columns here*/
+    
+
+  DECLARE @NEXT_REQ_STRUCT TABLE(
+    id CHAR(32) COLLATE database_default PRIMARY KEY,
+    source_id CHAR(32) COLLATE database_default,
+    related_id CHAR(32) COLLATE database_default);
+    /* you may add more columns here*/
+    
+  
+  DECLARE @CURRENT_LEVEL AS INTEGER;
+  SET @CURRENT_LEVEL = 0;
+
+  DECLARE @NEXT_STR_COUNT AS INTEGER;
+
+  INSERT INTO @NEXT_REQ_STRUCT
+  SELECT id, source_id, related_id
+    /* you may add more columns here*/
+  FROM REQUIREMENT_STRUCTURE
+  WHERE source_id = @reqId;
+
+  SET @NEXT_STR_COUNT = @@ROWCOUNT;
+  IF @NEXT_STR_COUNT = 0
+  BEGIN
+    RETURN;
+  END
+
+  INSERT INTO @KNOWN_REQ_STRUCT
+  SELECT id
+  FROM @NEXT_REQ_STRUCT;
+  
+  DECLARE @LEVELS_TO_CHECK AS INTEGER;
+
+  WHILE @NEXT_STR_COUNT > 0
+  BEGIN
+    INSERT INTO @REQ_STRUCT
+    SELECT @CURRENT_LEVEL, *
+    FROM @NEXT_REQ_STRUCT;
+
+    DELETE FROM @CURRENT_REQ_STRUCT;
+    INSERT INTO @CURRENT_REQ_STRUCT
+    SELECT *
+    FROM @NEXT_REQ_STRUCT;
+    
+    DELETE FROM @NEXT_REQ_STRUCT;
+    
+    INSERT INTO @NEXT_REQ_STRUCT
+    SELECT DISTINCT id, source_id, related_id
+      /* you may add more columns here*/
+    FROM REQUIREMENT_STRUCTURE
+    WHERE source_id IN (SELECT related_id FROM @CURRENT_REQ_STRUCT);
+
+    SET @NEXT_STR_COUNT = @@ROWCOUNT;
+
+    IF @NEXT_STR_COUNT = 0
+    BEGIN
+      RETURN;
+    END
+
+    IF @LEVELS_TO_CHECK IS NULL
+    BEGIN
+      /* try to find "new" REQ_STRUCT records. 
+         if there are no - this means we found all the tree . */
+      DECLARE @NEW_STR_COUNT AS INTEGER;
+
+      INSERT INTO @KNOWN_REQ_STRUCT
+      SELECT newb.id
+      FROM @NEXT_REQ_STRUCT newb 
+           LEFT OUTER JOIN @KNOWN_REQ_STRUCT kb ON kb.id=newb.id
+      WHERE kb.id IS NULL;
+
+      SET @NEW_STR_COUNT = @@ROWCOUNT;
+
+      IF @NEW_STR_COUNT = 0
+      BEGIN
+        SET @LEVELS_TO_CHECK = @CURRENT_LEVEL; 
+        /* because the first level # is 0. 
+           It is enough to detect infinite loop. */
+      END
+    END
+    ELSE
+    BEGIN
+      IF @LEVELS_TO_CHECK <= 0
+      BEGIN
+        /* infinite loop is detected */
+        
+        DELETE FROM @CURRENT_REQ_STRUCT;
+        
+        /* create a list of all REQ_STRUCT */
+        INSERT INTO @CURRENT_REQ_STRUCT
+        SELECT p.id, p.source_id, p.related_id
+        FROM REQUIREMENT_STRUCTURE p 
+             INNER JOIN @KNOWN_REQ_STRUCT myP ON p.id = myP.id;
+        
+        DECLARE @LEAF_REQ_COUNT AS INTEGER;
+        SET @LEAF_REQ_COUNT = 1;
+
+        WHILE @LEAF_REQ_COUNT > 0
+        BEGIN
+          DELETE FROM @CURRENT_REQ_STRUCT
+          WHERE related_id NOT IN (SELECT source_id FROM @CURRENT_REQ_STRUCT);
+          
+          SET @LEAF_REQ_COUNT = @@ROWCOUNT;
+        END
+        
+        DECLARE @infinitive_loop_parent_id AS CHAR(32);
+        DECLARE @infinitive_loop_child_id AS CHAR(32);
+
+        SELECT TOP 1 @infinitive_loop_parent_id = source_id,
+                     @infinitive_loop_child_id = related_id
+        FROM @CURRENT_REQ_STRUCT;
+
+        IF @infinitive_loop_parent_id IS NOT NULL
+        BEGIN
+          DECLARE @parent_req_keyed_name VARCHAR(128);
+          DECLARE @child_req_keyed_name VARCHAR(128);
+
+          SELECT @parent_req_keyed_name=ISNULL(keyed_name,id)
+          FROM REQUIREMENT
+          WHERE id=@infinitive_loop_parent_id;
+
+          SELECT @child_req_keyed_name=ISNULL(keyed_name,id)
+          FROM REQUIREMENT
+          WHERE id=@infinitive_loop_child_id;
+
+          SET @CURRENT_LEVEL = CAST(
+'
+<error>
+<B>The requirement structure contains circular references</B>. Please check dependency between REQUIREMENT "' +
+          @parent_req_keyed_name + '" (' + @infinitive_loop_parent_id + ') and "' +
+          @child_req_keyed_name + '" (' + @infinitive_loop_child_id + ').
+</error>
+'         AS INTEGER);
+        END
+      END
+      
+      SET @LEVELS_TO_CHECK = @LEVELS_TO_CHECK - 1;
+    END
+
+    SET @CURRENT_LEVEL = @CURRENT_LEVEL + 1;
+  END
+  
+  RETURN;
+END]]></sqlserver_body>
+  <stale>0</stale>
+  <transform_first>0</transform_first>
+  <type>function</type>
+ </Item>
+</AML>

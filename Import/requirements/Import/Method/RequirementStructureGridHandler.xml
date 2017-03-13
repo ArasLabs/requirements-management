@@ -1,0 +1,244 @@
+﻿<AML>
+ <Item type="Method" id="6155E85604174CD3B05707F9B1322F12" action="add">
+  <classification>/*</classification>
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[// Client side Method: treeGrid1 Handler
+// 
+// load with --> onLoad Event on Form:
+//               "plme ECO Affected Products Grid"
+//
+// the variable treeGrid1_Control is defined globally in separate HTML code on form field
+// the variable toolbar1_Control is defined globally in separate HTML code on form field
+//
+//  ---- history -----
+//  rolf  10.12.2009          initial version - cloned grid from "plme ECO PartBOMGrid Handler"
+//
+// ====================================================================================================================
+if (OnLoadMethodsLoaded) {return;}
+var innovator = new top.Innovator();
+var allOpenTreeNodes = "";
+var result;
+
+// retrieving ICONs - get the small icon from item types "Part"
+var qryIcon = top.aras.newIOMItem();
+qryIcon.loadAML("<Item type='ItemType' action='get' select='name,open_icon'><name>Requirement</name></Item>");
+qryIcon = qryIcon.apply();
+var Req_rowIcon = "../images/Icons/16x16/16x16_part.gif";
+if (qryIcon.getItemCount() === 1) {Req_rowIcon = qryIcon.getProperty("open_icon",Req_rowIcon);}
+
+// window global variable
+window.allChgActionsOfAffectedParts = "";  // comma separated list
+
+//==================== Toolbar Layout & actions ===================================
+window.getGridToolbarHTML = function (physicalHierarchyRootID)   {
+
+  var toolbarHTMLstring = '';
+  toolbarHTMLstring += '<toolbarapplet on_click="treeGrid1_onToolbarClick" ';
+  toolbarHTMLstring += 'on_load="toobarStart" buttonstyle="windows"  buttonsize="40,22" font="' + "Arial-bold-10" + '" ';
+  toolbarHTMLstring += 'top_border="1"  bottom_border="1"><toolbar id="toolbar"> ';
+  toolbarHTMLstring += '<button text="Expand All" id="expandall" image="icons/24x24expandpopnode.gif" tooltip="Expand All" disabled="true" /> ';
+  toolbarHTMLstring += '<button text="Collapse All" id="collapseall" image="icons/24x24collandpopnode.gif" tooltip="Collapse All" disabled="true" /> ';
+  toolbarHTMLstring += '<button text="Reload" id="reload" image="icons/20x20refresh.gif" tooltip="Re-Load Matrix" disabled="false" /> ';
+  toolbarHTMLstring += '<separator/> ';
+  toolbarHTMLstring += '<button text="Open Item" id="open_row_item" image="icons/20x20view.gif" tooltip="Open Item" disabled="true" /> ';
+  toolbarHTMLstring += '<separator/> ';
+  toolbarHTMLstring += '<separator/> ';
+  toolbarHTMLstring += '<button text="Excel" id="load_to_excel" image="icons/16x16_icon_msExcel.gif" tooltip="Excel Report" disabled="true" /> ';
+toolbarHTMLstring += '</toolbar></toolbarapplet>';
+	  
+  return(toolbarHTMLstring);
+};
+//==================== Grid Layout & Style ===================================
+
+var GridStyle='';
+GridStyle += '<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">';
+GridStyle += '  <xsl:template match="/">';
+GridStyle += '<table ';
+GridStyle += 'font="Microsoft Sans Serif-8" ';
+GridStyle += 'sel_bgColor="steelbue" ';
+GridStyle += 'sel_TextColor="white" ';
+GridStyle += 'header_BgColor="buttonface" ';
+GridStyle += 'expandroot="true" ';
+GridStyle += 'expandall="false" ';
+GridStyle += 'treelines="1" ';
+GridStyle += 'editable="false" ';
+GridStyle += 'draw_grid="true" ';
+GridStyle += 'multiselect="true" ';
+GridStyle += 'column_draggable="true" ';
+GridStyle += 'enableHtml="false" ';
+GridStyle += 'enterAsTab="false" ';
+GridStyle += 'bgInvert="true" ';
+GridStyle += 'xmlns:msxsl="urn:schemas-microsoft-com:xslt" ';
+GridStyle += 'xmlns:aras="http://www.aras.com" ';
+GridStyle += 'xmlns:usr="urn:the-xml-files:xslt"';
+GridStyle += '>';
+GridStyle += '<thead>';
+GridStyle += ' <th align="c">Number</th>';
+GridStyle += ' <th align="c">Classification</th>';
+GridStyle += ' <th align="c">Title</th>';
+GridStyle += ' <th align="c">Status</th>';
+GridStyle += ' <th align="c">Revision</th>';
+GridStyle += ' <th align="c">Sort Order</th>';
+GridStyle += '</thead>';
+GridStyle += '<columns>';
+GridStyle += ' <column width="150" edit="NOEDIT"  align="l" order="1" />';
+GridStyle += ' <column width="180" edit="NOEDIT"  align="l" order="2" />';
+GridStyle += ' <column width="250" edit="NOEDIT"  align="l" order="3" />';
+GridStyle += ' <column width="120" edit="NOEDIT"  align="l" order="4" />';
+GridStyle += ' <column width="60"  edit="NOEDIT"  align="l" order="5" />';
+GridStyle += ' <column width="60"  edit="NOEDIT"  align="l" order="0" />';
+GridStyle += '</columns>';
+GridStyle += '<menu>';
+GridStyle += ' <emptytag/>';
+GridStyle += '</menu>';
+GridStyle += '<xsl:apply-templates select="/*/*/Result/Item[level = 0]"/>';
+GridStyle += '</table>';
+
+GridStyle += '</xsl:template> ';
+GridStyle += '  <xsl:template match="Item">';
+GridStyle += '    <xsl:variable name="currentLevel" select="level"/>';
+GridStyle += '    <xsl:variable name="partId" select="related_id"/>';
+GridStyle += '    <xsl:variable name="bomId" select="bom_id"/>';
+GridStyle += '    <xsl:variable name="empty_test">##"</xsl:variable>';
+GridStyle += '    <xsl:variable name="locked" select="concat($empty_test,related_part_locked_by_id)"/>';
+GridStyle += '    <tr>';
+//GridStyle += '      <xsl:attribute name="id"><xsl:value-of select="$bomId"/></xsl:attribute>';
+GridStyle += '      <xsl:attribute name="id"><xsl:value-of select="$partId"/></xsl:attribute>';  // this should use the bom_id so same parts can in BOM at multiple levels
+GridStyle += '      <xsl:attribute name="level"><xsl:value-of select="$currentLevel"/></xsl:attribute>';
+GridStyle += '      <xsl:attribute name="icon0">'+Req_rowIcon+'</xsl:attribute>';
+GridStyle += '      <xsl:attribute name="icon1">'+Req_rowIcon+'</xsl:attribute>';
+GridStyle += '      <userdata key="gridData_rowItemID"><xsl:value-of select="$partId"/></userdata>'; // does not quite work !!
+GridStyle += '      <td>';
+GridStyle += '        <xsl:value-of select="related_item_number"/>';
+GridStyle += '      </td>';
+GridStyle += '      <td>';
+GridStyle += '        <xsl:value-of select="related_classification"/>';
+GridStyle += '      </td>';
+GridStyle += '      <td>';
+GridStyle += '        <xsl:value-of select="related_title"/>';
+GridStyle += '      </td>';
+GridStyle += '      <td>';
+GridStyle += '        <xsl:value-of select="related_state"/>';
+GridStyle += '      </td>';
+GridStyle += '      <td>';
+GridStyle += '        <xsl:value-of select="related_revision"/>';
+GridStyle += '      </td>';
+GridStyle += '      <td>';
+GridStyle += '        <xsl:value-of select="sort_order"/>';
+GridStyle += '      </td>';
+GridStyle += '      <xsl:apply-templates select="../Item[level=($currentLevel + 1) and source_id=$partId]"/>';
+GridStyle += '    </tr>';
+GridStyle += '  </xsl:template>';
+GridStyle += '</xsl:stylesheet>';
+var gridStyle=new ActiveXObject("Msxml2.DOMDocument.4.0");
+gridStyle.loadXML(GridStyle);
+
+// ==================================================================================================================
+
+treeGrid1_initToolbar = function () {
+  treeGrid1_setControlEnabled("expandall", true);
+  treeGrid1_setControlEnabled("collapseall", true);
+  treeGrid1_setControlEnabled("open_row_item", true);
+  var val = (top.aras.getVariable('ShowLabels') == 'true');
+  toolbar1_Control.showLabels(val);
+};
+
+window.initTreeGridWithData = function (inGridControl) {
+  //debugger;
+  var assyID = top.frames[1].document.thisItem.getProperty("id","");
+  
+  treeGrid1_Control.clear();
+
+  assyItem = innovator.newItem("Requirement", "RequirementGetStructure");
+  assyItem.setID(assyID);
+  assyItem = assyItem.apply();
+  if (assyItem.isError())  {
+    top.aras.AlertError(assyItem.getErrorString());
+    return assyItem;
+  }
+  assyItem.dom.documentElement.setAttribute("currentUserId", top.aras.getUserID());
+
+  var gridXML = assyItem.dom.transformNode(gridStyle);
+		
+  //prompt("grid",gridXML);
+  treeGrid1_Control.InitXml(gridXML);
+
+  treeGrid1_initToolbar();
+  //treeGrid1_Control.SetColumnProperties("sorttype=numeric",2);
+  //treeGrid1_Control.sort(2,true);
+  treeGrid1_Control.CollapseAll();
+};
+
+// ============================= Toolbar & Menu  Handlers ===============================
+treeGrid1_onEditCell = function (type, rowID, column) {
+  return;  // not used
+};
+treeGrid1_onKeyPressed = function (kEv) {
+  return;  // not used
+};
+
+treeGrid1_setControlEnabled = function (ctrlName, b) {
+  if (toolbar1_Control) {
+	  var AT = toolbar1_Control.getActiveToolbar();
+	  if (b === undefined) {b = true;}
+	  else {b = Boolean(b);}
+		  try
+	  {
+		 var tbi  = AT.getElement(ctrlName);
+		 if (tbi) {tbi.setEnabled(b);}
+	  }
+	  catch (excep) {alert('exception during treeGrid1_setControlEnabled()');}
+	}
+};
+treeGrid1_onToolbarClick = function (item) {
+	treeGrid1_Control.turnEditOff();
+	if (item.getId() == "expandall") {treeGrid1_onExpandAll();}
+	if (item.getId() == "collapseall") {treeGrid1_onCollapseAll();}
+	if (item.getId() == "reload") {window.initTreeGridWithData(true);}
+    if (item.getId() == "open_row_item") {treeGrid1_onOpenRowItem();}
+};
+
+treeGrid1_onGridMenuInit = function (row,col,p) {
+	var mnu = treeGrid1_Control.getMenu();
+	mnu.removeAll();
+	mnu.add("open_row_item","Open Item");
+	mnu.show();
+};
+
+treeGrid1_onGridMenuClick = function (menuChoice) {
+  window.allOpenTreeNodes = treeGrid1_Control.getOpenedItems("|"); // snapshot of currently opened nodes
+  var selectedId = treeGrid1_Control.getSelectedId();
+  if (!selectedId) {return;}
+  
+  if (menuChoice == "open_row_item") {treeGrid1_onOpenRowItem();}
+};
+
+treeGrid1_onExpandAll = function () {
+  treeGrid1_Control.ExpandAll();
+  allOpenTreeNodes = treeGrid1_Control.getOpenedItems("|");
+};
+
+treeGrid1_onCollapseAll = function () {
+  treeGrid1_Control.CollapseAll();
+};
+
+treeGrid1_onGridDoubleClick = function (r) {
+  treeGrid1_onOpenRowItem();
+};
+
+treeGrid1_onGridClick = function (row,c) {
+ 	treeGrid1_setControlEnabled("open", true);
+};
+
+treeGrid1_onOpenRowItem = function () {
+  var selectedId = treeGrid1_Control.getSelectedId();
+  if (!selectedId) {return;}
+  var partId = treeGrid1_Control.getUserData(selectedId,"gridData_rowItemID");
+
+//  top.aras.uiShowItem("Part", partId);  //## user data does not work .. but would be better - fix later
+  top.aras.uiShowItem("Requirement", selectedId);
+};]]></method_code>
+  <method_type>JavaScript</method_type>
+  <name>RequirementStructureGridHandler</name>
+ </Item>
+</AML>

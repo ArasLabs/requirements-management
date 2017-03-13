@@ -1,0 +1,81 @@
+﻿<AML>
+ <Item type="RelationshipType" id="AA012EF16DEC47D1A08ADBA4FF7A97DF" action="add" dependencyLevel="0">
+  <auto_search>1</auto_search>
+  <behavior>float</behavior>
+  <classification>/*</classification>
+  <copy_permissions>0</copy_permissions>
+  <create_related>0</create_related>
+  <hide_in_all>0</hide_in_all>
+  <inc_rel_key_name>1</inc_rel_key_name>
+  <inc_related_key_name>1</inc_related_key_name>
+  <is_list_type>0</is_list_type>
+  <label xml:lang="en">Where used</label>
+  <name>Requirement Link In</name>
+  <new_show_related>0</new_show_related>
+  <related_notnull>0</related_notnull>
+  <related_option>2</related_option>
+  <relationship_id keyed_name="Requirement Link In" type="ItemType" name="Requirement Link In">
+   <Item type="ItemType" id="39979DA4DC4943049A314757BB5C9607" action="add">
+    <allow_private_permission>1</allow_private_permission>
+    <auto_search>0</auto_search>
+    <enforce_discovery>0</enforce_discovery>
+    <hide_where_used>0</hide_where_used>
+    <implementation_type>table</implementation_type>
+    <instance_data>REQUIREMENT_LINK_IN</instance_data>
+    <is_dependent>0</is_dependent>
+    <is_relationship>1</is_relationship>
+    <is_versionable>0</is_versionable>
+    <manual_versioning>0</manual_versioning>
+    <name>Requirement Link In</name>
+    <revisions keyed_name="Default" type="Revision">7FE395DD8B9F4E1090756A34B733D75E</revisions>
+    <show_parameters_tab>1</show_parameters_tab>
+    <unlock_on_logout>0</unlock_on_logout>
+    <use_src_access>1</use_src_access>
+    <Relationships>
+     <Item type="View" id="7EC4A171E19C4493A74AD56C84994297" action="add">
+      <classification>/*</classification>
+      <client>js</client>
+      <related_id keyed_name="Requirement Link" type="Form">5F2641E9568249B0ACB3A85E3BFE09C2</related_id>
+      <role keyed_name="World" type="Identity">
+       <Item type="Identity" action="get" select="id">
+        <name>World</name>
+       </Item>
+      </role>
+      <sort_order>128</sort_order>
+      <source_id keyed_name="Requirement Link In" type="ItemType" name="Requirement Link In">39979DA4DC4943049A314757BB5C9607</source_id>
+      <type>default</type>
+     </Item>
+    
+     <Item type="View" id="7E9B0127BEA14EB98616E698E24D6E81" action="add">
+      <classification>/*</classification>
+      <client>js</client>
+      <related_id keyed_name="Requirement Link In" type="Form">B7CD9F31EBEF4F0999A71956EE6D23E0</related_id>
+      <role keyed_name="World" type="Identity">
+       <Item type="Identity" action="get" select="id">
+        <name>World</name>
+       </Item>
+      </role>
+      <sort_order>256</sort_order>
+      <source_id keyed_name="Requirement Link In" type="ItemType" name="Requirement Link In">39979DA4DC4943049A314757BB5C9607</source_id>
+      <type>default</type>
+     </Item></Relationships>
+   </Item>
+  </relationship_id>
+  <sort_order>40</sort_order>
+  <source_id keyed_name="Requirement" type="ItemType" name="Requirement">036DB34801A24ACF8DD39DFDBE8F2909</source_id>
+  <Relationships>
+   <Item type="Relationship View" id="64DF0F4F1B614966A362A72893BFEEFC" action="add">
+    <classification>/*</classification>
+    <form keyed_name="RequirementWhereUsedGrid" type="Form">84021BFA93FC4EF2A2456B3177E70D91</form>
+    <related_id keyed_name="World" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>World</name>
+     </Item>
+    </related_id>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="Requirement Link In" type="RelationshipType">AA012EF16DEC47D1A08ADBA4FF7A97DF</source_id>
+    <start_page></start_page>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

@@ -1,0 +1,35 @@
+﻿<AML>
+ <Item type="SQL" id="BDDC0E5A4D6F42F582CE98D5A9356592" action="add">
+  <execution_count>6</execution_count>
+  <execution_flag>immediate</execution_flag>
+  <name>RequirementGetCompleteStructure</name>
+  <old_name>RequirementGetCompleteStructure</old_name>
+  <sqlserver_body><![CDATA[CREATE PROCEDURE RequirementGetCompleteStructure(@reqId CHAR(32))
+AS
+BEGIN
+  SELECT *
+  INTO #completeReqStructure
+  FROM RequirementGetCompleteStructure2(@reqId);
+
+  SELECT crs.level level,
+         sr.id source_id,
+         rs.sort_order sort_order,
+         req.id related_id,
+         req.locked_by_id related_locked_by_id, 
+	 req.item_number related_item_number, 
+         req.classification related_classification,
+	 req.req_rm_title related_title,
+	 req.state related_state,
+	 req.major_rev related_revision
+  FROM #completeReqStructure crs INNER JOIN REQUIREMENT sr ON crs.source_id=sr.id
+       INNER JOIN REQUIREMENT_STRUCTURE rs ON crs.id=rs.id
+       INNER JOIN REQUIREMENT req ON crs.related_id=req.id
+  ORDER BY crs.level, rs.sort_order
+
+  DROP TABLE #completeReqStructure;
+END]]></sqlserver_body>
+  <stale>0</stale>
+  <transform_first>0</transform_first>
+  <type>procedure</type>
+ </Item>
+</AML>

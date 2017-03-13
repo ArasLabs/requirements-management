@@ -1,0 +1,285 @@
+﻿<AML>
+ <Item type="Method" id="C361915EC6B44FDEB9A8EB8325975861" action="add">
+  <classification>/*</classification>
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[// Client side Method: Grid1 Handler
+// 
+// load with --> onLoad Event on Form:
+//               "plme Item Parts Grid"
+//
+// the variable Grid1_Control is defined globally in separate HTML code on form field
+// the variable toolbar1_Control is defined globally in separate HTML code on form field
+//
+//  ---- history -----
+//  rolf   22.11.2009          cloned from plme ECO Grid Handlers
+//  andrea 07.04.2010          adapted for req.Management
+//
+// ====================================================================================================================
+if (OnLoadMethodsLoaded) {return;}
+var standardGridFont= "Microsoft Sans Serif-8";
+var italicGridFont= "Microsoft Sans Serif-italic-8";
+var thisChangeStatus;
+var thisItemType;
+var innovator = new top.Innovator();
+var I18Ncntx = innovator.getI18NSessionContext();
+var result;
+
+// window global variable
+  
+  //debugger; 
+  
+  window.thisDocumentId = top.frames[1].document.thisItem.getProperty("id","");
+  thisDocumentStatus = top.frames[1].document.thisItem.getProperty("state","");
+  thisItemType = top.frames[1].document.thisItem.getAttribute("type","");
+
+  // relies on naming convention of relationship prom Part to "ThisItemType"
+  var reverseItemRelsName = "";
+  var definingColumn = 0;
+  //top.aras.AlertError (thisItemType );
+  switch (thisItemType) {
+  case "Requirement":
+    reverseItemRelsName = "Part Requirement";
+	definingColumn=1;
+	break;
+  default:
+    top.aras.AlertError ("This grid works for changes of type 'Requirement' only.");
+	return;
+  }
+  var sourceItemType = "Part";
+
+//==================== Toolbar Layout & actions ===================================
+window.getGridToolbarHTML = function (physicalHierarchyRootID)   {
+
+  var toolbarHTMLstring = '';
+  toolbarHTMLstring += '<toolbarapplet on_click="Grid1_onToolbarClick" ';
+  toolbarHTMLstring += 'on_load="toobarStart" buttonstyle="windows"  buttonsize="40,22" font="' + "Arial-bold-10" + '" ';
+  toolbarHTMLstring += 'top_border="1"  bottom_border="1"><toolbar id="toolbar"> ';
+  toolbarHTMLstring += '<button text="View Item" id="view_item" image="icons/20x20view.gif" tooltip="View Item" disabled="true" /> ';
+  toolbarHTMLstring += '<separator/> ';
+  toolbarHTMLstring += '<button text="Reload" id="reload" image="icons/20x20refresh.gif" tooltip="Re-Load Matrix" disabled="false" /> ';
+toolbarHTMLstring += '</toolbar></toolbarapplet>';
+	  
+  return(toolbarHTMLstring);
+};
+//==================== Grid Layout & Style ===================================
+var GridXMLHeader = '';
+GridXMLHeader += '<?xml version="1.0"?><table font="' + standardGridFont + '" ';
+GridXMLHeader += 'backgroundColor="white" ';
+GridXMLHeader += 'sel_bgColor="steelbue" '; // html predefined
+GridXMLHeader += 'sel_TextColor="white" ';
+GridXMLHeader += 'delim ="|" ';
+//GridXMLHeader += 'zebra="true" ';
+GridXMLHeader += 'editable="false" ';
+GridXMLHeader += 'draw_grid="true" ';
+GridXMLHeader += 'multiselect="false" ';
+GridXMLHeader += 'enableHtml="false" ';
+GridXMLHeader += 'enterAsTab="false" ';
+GridXMLHeader += 'bgInvert="true" ';    
+GridXMLHeader += 'expandroot="true" ';
+GridXMLHeader += 'expandall="false" ';
+//GridXMLHeader += 'treelines="1" ';
+GridXMLHeader += 'treelines="0" ';
+GridXMLHeader += 'locale="enUS" ';
+GridXMLHeader += 'onrowselect="Grid1_onGridClick" ';
+GridXMLHeader += 'onDoubleClick="Grid1_onGridDoubleClick" ';
+GridXMLHeader += '> ';
+GridXMLHeader += '<thead>';
+GridXMLHeader += '<th align="c"></th>';
+GridXMLHeader += '<th align="c">Number</th>';
+GridXMLHeader += '<th balign="c">Status</th>';
+GridXMLHeader += '<th balign="c">Name</th>';
+GridXMLHeader += '<th align="c">Rev</th>';
+GridXMLHeader += '<th balign="c">Owner</th>';
+GridXMLHeader += '<th align="c">Release Date</th>';
+GridXMLHeader += '<th align="c">Classification</th>';
+GridXMLHeader += '</thead>';
+GridXMLHeader += '<columns>';
+GridXMLHeader += '<column width="40" edit="NOEDIT" align="c" order="0" />';
+GridXMLHeader += '<column width="120" edit="NOEDIT" align="l" order="1" />';
+GridXMLHeader += '<column width="105" edit="NOEDIT" align="c" order="2" />';
+GridXMLHeader += '<column width="190" edit="NOEDIT" align="l" order="3" />';
+GridXMLHeader += '<column width="40"  edit="NOEDIT" align="c" order="4" />';
+GridXMLHeader += '<column width="100" edit="NOEDIT" align="l" order="5" />';
+GridXMLHeader += '<column width="100" edit="NOEDIT" align="l" order="6" />';
+GridXMLHeader += '<column width="150" edit="NOEDIT" align="l" order="7" />';
+GridXMLHeader += '</columns>';
+GridXMLHeader += '<menu>';
+GridXMLHeader += '<emptytag/>';
+GridXMLHeader += '</menu>';
+GridXMLHeader += '</table>';
+
+// ==================================================================================================================
+Grid1_initToolbar = function () {
+  Grid1_settoolbar1_ControlEnabled("view_item", true);
+
+  var val = (top.aras.getVariable('ShowLabels') == 'true');
+  toolbar1_Control.showLabels(val);
+};
+
+//==================================
+Grid1_settoolbar1_ControlEnabled = function (ctrlName, b) {
+  if (toolbar1_Control) {
+	  var AT = toolbar1_Control.getActiveToolbar();
+	  if (b === undefined) {b = true;}
+	  else {b = Boolean(b);}
+		  try
+	  {
+		 var tbi  = AT.getElement(ctrlName);
+		 if (tbi) {tbi.setEnabled(b);}
+	  }
+	  catch (excep) {alert('exception during Grid1_settoolbar1_ControlEnabled()');}
+	}
+};
+
+//==================================
+window.initGridWithData = function (inGridControl) {
+  //debugger;
+ 
+  if (thisItemType !== "Requirement") {
+  }
+
+  Grid1_Control.clear();
+  // apply Grid XML Header
+  var gridXML = GridXMLHeader;
+		
+  //prompt("grid",gridXML);
+  Grid1_Control.InitXml(gridXML);
+  
+  // get the small icon of the source item type
+  var qry = top.aras.newIOMItem("ItemType","get");
+  qry.setAttribute("select","name,open_icon");
+  qry.setProperty("name",sourceItemType);
+
+  qry = qry.apply();
+  var rowIcon = "icons/item_node.gif";
+  if (qry.getItemCount() === 1) {rowIcon = qry.getProperty("open_icon",rowIcon);}
+
+  var reverseItemRels = top.aras.newIOMItem(reverseItemRelsName,"get");
+
+  reverseItemRels.setAttribute ("select","sort_order,source_id(name, item_number, major_rev, config_id, generation, state, classification, release_date, owned_by_id(keyed_name)");
+  reverseItemRels.setProperty("related_id", window.thisDocumentId);
+  reverseItemRels.setAttribute ("orderBy","sort_order DESC");
+  reverseItemRels = reverseItemRels.apply();
+  
+  // if same items with different generation are returned, then strip the lower generations and keep the highest found (floating the reverse relatoinship)
+  var allItemConfigIds = "";
+  var allOwnerNames = "";
+  //debugger;  
+  for (var p=0; p < reverseItemRels.getItemCount(); p++) {
+    var reverseItemRel = reverseItemRels.getItemByIndex(p);
+
+    var sourceItem = reverseItemRel.getItemsByXPath("/*/*/Result/Item/source_id/Item");
+	if (sourceItem.getItemCount() >0) {
+      sourceItem = sourceItem.getItemByIndex(p);
+	  var thisConfigId = sourceItem.getProperty("config_id","");
+	  if (allItemConfigIds.indexOf(thisConfigId) < 0) {
+	    allItemConfigIds += thisConfigId + ",";
+	  
+	    var ownerItem = reverseItemRel.getItemsByXPath("/*/*/Result/Item/source_id/Item/owned_by_id/Item");
+		if (ownerItem.getItemCount() >0) {allOwnerNames += ownerItem.getItemByIndex(p).getProperty("keyed_name","--") + ",";}
+	  }
+	}
+  }
+
+  // strip trailing comma from lists
+  var owner_names_array = allOwnerNames.split(",");
+  allItemConfigIds = allItemConfigIds.substring(0,(allItemConfigIds.length-1));
+  var config_id_array = allItemConfigIds.split(",");
+  for (p = 0 ; config_id_array[0] !== "" && p < config_id_array.length ; p++) {
+    var itemGens = reverseItemRel.getItemsByXPath("/*/*/Result/Item/source_id/Item[config_id='"+config_id_array[p]+"']");
+    if (itemGens.getItemCount() >1) {
+	  var highestGen=0;
+	  for (var g=0; g<itemGens.getItemCount(); g++) {
+	    var thisGen = itemGens.getItemByIndex(g).getProperty("generation","");
+		if (Number(thisGen) > highestGen) {
+		  sourceItem = itemGens.getItemByIndex(g);
+		  highestGen = Number(thisGen);
+		}
+	  }
+	}
+	else {
+	  sourceItem = itemGens;
+	}
+
+	var releasedDate = sourceItem.getProperty("release_date","--");
+	if (releasedDate !== "--") {releasedDate = I18Ncntx.ConvertFromNeutral(releasedDate,"date","short_date_time");}
+	  
+	var gridrow =  "<img src='" + rowIcon + "' />";
+	gridrow += "|" + sourceItem.getProperty("item_number","--");
+	gridrow += "|" + sourceItem.getProperty("state","--");
+	gridrow += "|" + sourceItem.getProperty("name","--");
+	gridrow += "|" + sourceItem.getProperty("major_rev","--");
+	gridrow += "|" + owner_names_array[p];
+	gridrow += "|" + releasedDate;
+	gridrow += "|" + sourceItem.getProperty("classification","--");
+		  
+	var newNodeId = reverseItemRel.getProperty("source_id","");
+	  
+	Grid1_Control.AddRow( newNodeId, gridrow, newNodeId);
+	Grid1_Control.setUserData(newNodeId,"gridData_itemID",newNodeId);
+	Grid1_Control.setUserData(newNodeId,"gridData_itemtype",sourceItemType );
+	Grid1_Control.setUserData(newNodeId,"gridData_class",sourceItem.getProperty("classification","--"));
+  }
+
+  Grid1_initToolbar();
+};
+
+//==================================
+plme_GetCheckBoxCellFormat = function (on_off_value)   {
+  var checked_icon = "<img src='icons/item_chk0.gif' />";
+  if (on_off_value === "1") {checked_icon = "<img src='icons/item_chk1.gif' />";}
+  return checked_icon;
+};
+
+// =============================  Click Handlers ===============================
+Grid1_onEditCell = function (type, rowID, column) {
+  return;  // not used
+};
+Grid1_onKeyPressed = function (kEv) {
+  return;  // not used
+};
+
+Grid1_onGridClick = function (row,c) {
+ 	Grid1_settoolbar1_ControlEnabled("view_item", true);
+};
+
+Grid1_onToolbarClick = function (item) {
+	Grid1_Control.turnEditOff();
+	if (item.getId() == "reload") {Grid1_onReloadAll();}
+    if (item.getId() == "view_item") {Grid1_onViewItem();}
+};
+
+Grid1_onGridMenuInit = function (row,col,p) {
+	var mnu = Grid1_Control.getMenu();
+	mnu.removeAll();
+	mnu.add("view_item","View Item");
+//	mnu.addSeparator();
+
+	mnu.show();
+};
+
+Grid1_onGridMenuClick = function (menuChoice) {
+  if (menuChoice == "view_item") {Grid1_onViewItem();}
+};
+
+Grid1_onGridDoubleClick = function (row) {
+  Grid1_onViewItem();
+};
+
+Grid1_onReloadAll = function () {
+   window.initGridWithData();
+};
+
+Grid1_onViewItem = function () {
+  var selectedId = Grid1_Control.getSelectedId();
+  if (!selectedId) {return;}
+  var my_itemtype = Grid1_Control.getUserData(selectedId,"gridData_itemtype");
+  var my_itemid = Grid1_Control.getUserData(selectedId,"gridData_itemID");
+  if (my_itemid === "") {return;}
+  top.aras.uiShowItem(my_itemtype, my_itemid );
+};
+]]></method_code>
+  <method_type>JavaScript</method_type>
+  <name>RequirementPartsGridHandler</name>
+ </Item>
+</AML>

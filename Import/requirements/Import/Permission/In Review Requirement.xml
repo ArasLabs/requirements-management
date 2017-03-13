@@ -1,0 +1,52 @@
+﻿<AML>
+ <Item type="Permission" id="DB60272EC74E43369618B5A6F13E9195" action="add">
+  <is_private>0</is_private>
+  <name>In Review Requirement</name>
+  <Relationships>
+   <Item type="Access" id="5F2C71A6F10F4B0EB6C5844A7A9925F5" action="add">
+    <can_change_access>0</can_change_access>
+    <can_delete>0</can_delete>
+    <can_discover>1</can_discover>
+    <can_get>1</can_get>
+    <can_update>1</can_update>
+    <classification>/*</classification>
+    <related_id keyed_name="Administrators" type="Identity">2618D6F5A90949BAA7E920D1B04C7EE1</related_id>
+    <show_permissions_warning>0</show_permissions_warning>
+    <sort_order>256</sort_order>
+    <source_id keyed_name="In Review Requirement" type="Permission">DB60272EC74E43369618B5A6F13E9195</source_id>
+   </Item>
+   <Item type="Access" id="F79E83AC1ACB4BB4B45ED51010D07E9D" action="add">
+    <can_change_access>0</can_change_access>
+    <can_delete>0</can_delete>
+    <can_discover>1</can_discover>
+    <can_get>1</can_get>
+    <can_update>0</can_update>
+    <classification>/*</classification>
+    <related_id keyed_name="Manager" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>Manager</name>
+     </Item>
+    </related_id>
+    <show_permissions_warning>0</show_permissions_warning>
+    <sort_order>512</sort_order>
+    <source_id keyed_name="In Review Requirement" type="Permission">DB60272EC74E43369618B5A6F13E9195</source_id>
+   </Item>
+  
+   <Item type="Access" id="C99EEEDF55D64666A1B795365C6F892D" action="add">
+    <can_change_access>0</can_change_access>
+    <can_delete>0</can_delete>
+    <can_discover>1</can_discover>
+    <can_get>1</can_get>
+    <can_update>1</can_update>
+    <classification>/*</classification>
+    <related_id keyed_name="Owner" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>Owner</name>
+     </Item>
+    </related_id>
+    <show_permissions_warning>0</show_permissions_warning>
+    <sort_order>384</sort_order>
+    <source_id keyed_name="In Review Requirement" type="Permission">DB60272EC74E43369618B5A6F13E9195</source_id>
+   </Item></Relationships>
+ </Item>
+</AML>

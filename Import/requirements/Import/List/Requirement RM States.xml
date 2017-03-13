@@ -1,0 +1,23 @@
+﻿<AML>
+ <Item type="List" id="894CDDFBC3584D499E780A5CBBCDB0A3" action="add">
+  <classification>/*</classification>
+  <description>Requirement RM States</description>
+  <name>Requirement RM States</name>
+  <Relationships>
+   <Item type="Value" id="4E40E7002F984BDABD254FFB02A99B31" action="add">
+    <classification>/*</classification>
+    <label xml:lang="en">Locked</label>
+    <sort_order>1</sort_order>
+    <source_id keyed_name="Requirement RM States" type="List">894CDDFBC3584D499E780A5CBBCDB0A3</source_id>
+    <value>Locked</value>
+   </Item>
+   <Item type="Value" id="DEFCCB54599D473B9CE769428D085CC3" action="add">
+    <classification>/*</classification>
+    <label xml:lang="en">Unlocked</label>
+    <sort_order>2</sort_order>
+    <source_id keyed_name="Requirement RM States" type="List">894CDDFBC3584D499E780A5CBBCDB0A3</source_id>
+    <value>Unlocked</value>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

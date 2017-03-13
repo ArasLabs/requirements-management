@@ -1,0 +1,20 @@
+﻿<AML>
+ <Item type="Permission" id="144B69888E8F402892F6E8D1359E5708" action="add">
+  <is_private>0</is_private>
+  <name>Released Requirement</name>
+  <Relationships>
+   <Item type="Access" id="994B8305551346AB92008C9EEE80CE11" action="add">
+    <can_change_access>1</can_change_access>
+    <can_delete>1</can_delete>
+    <can_discover>1</can_discover>
+    <can_get>1</can_get>
+    <can_update>1</can_update>
+    <classification>/*</classification>
+    <related_id keyed_name="Administrators" type="Identity">2618D6F5A90949BAA7E920D1B04C7EE1</related_id>
+    <show_permissions_warning>1</show_permissions_warning>
+    <sort_order>512</sort_order>
+    <source_id keyed_name="Released Requirement" type="Permission">144B69888E8F402892F6E8D1359E5708</source_id>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

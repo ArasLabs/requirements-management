@@ -1,0 +1,329 @@
+﻿<AML>
+ <Item type="Method" id="C49EF946207D46D4A5C76FAD328CE97B" action="add">
+  <classification>/*</classification>
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[// Client side Method: treeGrid1 Handler
+// 
+// load with --> onLoad Event on Form:
+//               "plme Item Parts Grid"
+//
+// the variable treeGrid1_Control is defined globally in separate HTML code on form field
+// the variable toolbar1_Control is defined globally in separate HTML code on form field
+//
+//  ---- history -----
+//  rolf   22.11.2009          cloned from plme ECO Grid Handlers
+//  andrea 07.04.2010          adapted for req.Management
+//
+// ====================================================================================================================
+if (OnLoadMethodsLoaded) {return;}
+var standardGridFont= "Microsoft Sans Serif-8";
+var italicGridFont= "Microsoft Sans Serif-italic-8";
+var thisChangeStatus;
+var thisItemType;
+var innovator = new top.Innovator();
+var I18Ncntx = innovator.getI18NSessionContext();
+var allOpenTreeNodes = "";
+var result;
+
+// window global variable
+  
+  //debugger; 
+  
+  window.thisDocumentId = top.frames[1].document.thisItem.getProperty("id","");
+  thisDocumentStatus = top.frames[1].document.thisItem.getProperty("state","");
+  thisItemType = top.frames[1].document.thisItem.getAttribute("type","");
+
+  // relies on naming convention of relationship prom Requirement to "ThisItemType"
+  var reverseItemRelsName = "";
+  var definingColumn = 0;
+  //top.aras.AlertError (thisItemType );
+  switch (thisItemType) {
+  case "Requirement":
+    reverseItemRelsName = "Requirement Link Out";
+	definingColumn=1;
+	break;
+  default:
+    top.aras.AlertError ("This grid works for changes of type 'Requirement' only.");
+	return;
+  }
+  var sourceItemType = "Requirement";
+
+//==================== Toolbar Layout & actions ===================================
+window.getGridToolbarHTML = function (physicalHierarchyRootID)   {
+
+  var toolbarHTMLstring = '';
+  toolbarHTMLstring += '<toolbarapplet on_click="treeGrid1_onToolbarClick" ';
+  toolbarHTMLstring += 'on_load="toobarStart" buttonstyle="windows"  buttonsize="40,22" font="' + "Arial-bold-10" + '" ';
+  toolbarHTMLstring += 'top_border="1"  bottom_border="1"><toolbar id="toolbar"> ';
+  toolbarHTMLstring += '<button text="Expand All" id="expandall" image="icons/24x24expandpopnode.gif" tooltip="Expand All" disabled="true" /> ';
+  toolbarHTMLstring += '<button text="Collapse All" id="collapseall" image="icons/24x24collandpopnode.gif" tooltip="Collapse All" disabled="true" /> ';
+  toolbarHTMLstring += '<button text="Reload" id="reload" image="icons/20x20refresh.gif" tooltip="Re-Load Matrix" disabled="false" /> ';
+  toolbarHTMLstring += '<separator/> ';
+  toolbarHTMLstring += '<button text="Open Item" id="open_row_item" image="icons/20x20view.gif" tooltip="Open Item" disabled="true" /> ';
+  toolbarHTMLstring += '<separator/> ';
+  toolbarHTMLstring += '<separator/> ';
+  toolbarHTMLstring += '<button text="Excel" id="load_to_excel" image="icons/16x16_icon_msExcel.gif" tooltip="Excel Report" disabled="true" /> ';
+toolbarHTMLstring += '</toolbar></toolbarapplet>';
+	  
+  return(toolbarHTMLstring);
+};
+//==================== Grid Layout & Style ===================================
+var GridXMLHeader = '';
+GridXMLHeader += '<?xml version="1.0"?><table font="' + standardGridFont + '" ';
+GridXMLHeader += 'backgroundColor="white" ';
+GridXMLHeader += 'sel_bgColor="steelbue" '; // html predefined
+GridXMLHeader += 'sel_TextColor="white" ';
+GridXMLHeader += 'delim ="|" ';
+//GridXMLHeader += 'zebra="true" ';
+GridXMLHeader += 'editable="false" ';
+GridXMLHeader += 'draw_grid="true" ';
+GridXMLHeader += 'multiselect="false" ';
+GridXMLHeader += 'enableHtml="false" ';
+GridXMLHeader += 'enterAsTab="false" ';
+GridXMLHeader += 'bgInvert="true" ';    
+GridXMLHeader += 'expandroot="true" ';
+GridXMLHeader += 'expandall="false" ';
+//GridXMLHeader += 'treelines="1" ';
+GridXMLHeader += 'treelines="1" ';
+GridXMLHeader += 'locale="enUS" ';
+GridXMLHeader += 'onrowselect="treeGrid1_onGridClick" ';
+GridXMLHeader += 'onDoubleClick="treeGrid1_onGridDoubleClick" ';
+GridXMLHeader += '> ';
+GridXMLHeader += '<thead>';
+GridXMLHeader += '<th align="c">Number</th>';
+GridXMLHeader += '<th align="c">Classification</th>';
+GridXMLHeader += '<th align="c">Title</th>';
+GridXMLHeader += '<th balign="c">Status</th>';
+GridXMLHeader += '<th align="c">Rev</th>';
+GridXMLHeader += '</thead>';
+GridXMLHeader += '<columns>';
+GridXMLHeader += '<column width="160" edit="NOEDIT" align="l" order="0" />';
+GridXMLHeader += '<column width="200" edit="NOEDIT" align="l" order="1" />';
+GridXMLHeader += '<column width="300" edit="NOEDIT" align="l" order="2" />';
+GridXMLHeader += '<column width="120" edit="NOEDIT" align="l" order="3" />';
+GridXMLHeader += '<column width="60"  edit="NOEDIT" align="l" order="4" />';
+GridXMLHeader += '</columns>';
+GridXMLHeader += '<menu>';
+GridXMLHeader += '<emptytag/>';
+GridXMLHeader += '</menu>';
+GridXMLHeader += '</table>';
+
+// ==================================================================================================================
+treeGrid1_initToolbar = function () {
+  treeGrid1_settoolbar1_ControlEnabled("view_item", true);
+  treeGrid1_settoolbar1_ControlEnabled("expandall", true);
+  treeGrid1_settoolbar1_ControlEnabled("collapseall", true);
+  var val = (top.aras.getVariable('ShowLabels') == 'true');
+  toolbar1_Control.showLabels(val);
+};
+
+//==================================
+treeGrid1_settoolbar1_ControlEnabled = function (ctrlName, b) {
+  if (toolbar1_Control) {
+	  var AT = toolbar1_Control.getActiveToolbar();
+	  if (b === undefined) {b = true;}
+	  else {b = Boolean(b);}
+		  try
+	  {
+		 var tbi  = AT.getElement(ctrlName);
+		 if (tbi) {tbi.setEnabled(b);}
+	  }
+	  catch (excep) {alert('exception during treeGrid1_settoolbar1_ControlEnabled()');}
+	}
+};
+
+//==================================
+window.initTreeGridWithData = function (inGridControl) {
+  //debugger;
+ 
+  if (thisItemType !== "Requirement") {
+  }
+
+  treeGrid1_Control.clear();
+  // apply Grid XML Header
+  var gridXML = GridXMLHeader;
+		
+  //prompt("grid",gridXML);
+  treeGrid1_Control.InitXml(gridXML);
+  
+
+  // get the small icon of the source item type
+  var qry = top.aras.newIOMItem("ItemType","get");
+  qry.setAttribute("select","name,open_icon");
+  qry.setProperty("name",sourceItemType);
+  //qry.setAttribute("where","name='" & sourceItemType & "'");
+  qry = qry.apply();
+  var rowIcon = "icons/item_node.gif";
+  if (qry.getItemCount() === 1) {rowIcon = qry.getProperty("open_icon",rowIcon);}
+
+  // add where used parents
+  reverseItemRelsName = "Requirement Structure";
+  var gridrow =  "Parent|Requirements";
+  var newNodeId = "PARENTS";
+  var reverseItemRels = top.aras.newIOMItem(reverseItemRelsName,"get");
+  reverseItemRels.setAttribute ("select","sort_order,source_id(item_number, major_rev, req_rm_title, config_id, generation, state, classification, release_date, owned_by_id(keyed_name)");
+  reverseItemRels.setProperty("related_id", window.thisDocumentId);
+  reverseItemRels.setAttribute ("orderBy","sort_order DESC");
+  reverseItemRels = reverseItemRels.apply();
+
+  treeGrid1_Control.InsertRoot( newNodeId, gridrow, newNodeId,"", "");
+  fn_setBackgroundColorOfCellsInRow(newNodeId, 0, 4, "#ffeeee");  // light red 
+  populateTreeGrid(newNodeId, reverseItemRels, rowIcon);
+
+  // add where used linked-in requirements
+  reverseItemRelsName = "Requirement Link In";
+  gridrow =  "Linked-In|Requirements";
+  newNodeId = "LINK-IN";
+  reverseItemRels = top.aras.newIOMItem(reverseItemRelsName,"get");
+  reverseItemRels.setAttribute ("select","sort_order,source_id(item_number, major_rev, req_rm_title, config_id, generation, state, classification, release_date, owned_by_id(keyed_name)");
+  reverseItemRels.setProperty("related_id", window.thisDocumentId);
+  reverseItemRels.setAttribute ("orderBy","sort_order DESC");
+  reverseItemRels = reverseItemRels.apply();
+
+  treeGrid1_Control.InsertRoot( newNodeId, gridrow, newNodeId,"", "");
+  fn_setBackgroundColorOfCellsInRow(newNodeId, 0, 4, "#ffeeee");  // light red 
+  populateTreeGrid(newNodeId, reverseItemRels, rowIcon);
+
+  treeGrid1_initToolbar();
+  treeGrid1_Control.CollapseAll();
+  treeGrid1_Control.OpenItem("PARENTS");
+  treeGrid1_Control.OpenItem("LINK-IN");
+  allOpenTreeNodes = treeGrid1_Control.getOpenedItems("|");
+};
+
+//==================================
+populateTreeGrid = function (parentNode, relItemCollection, rowIcon)   {
+  // if same items with different generation are returned, then strip the lower generations and keep the highest found (floating the reverse relatoinship)
+  var allItemConfigIds = "";
+  var allOwnerNames = "";
+  //debugger;  
+  for (var p=0; p < relItemCollection.getItemCount(); p++) {
+    var reverseItemRel = relItemCollection.getItemByIndex(p);
+
+    var sourceItem = reverseItemRel.getItemsByXPath("/*/*/Result/Item/source_id/Item");
+	if (sourceItem.getItemCount() >0) {
+      sourceItem = sourceItem.getItemByIndex(p);
+	  var thisConfigId = sourceItem.getProperty("config_id","");
+	  if (allItemConfigIds.indexOf(thisConfigId) < 0) {
+	    allItemConfigIds += thisConfigId + ",";
+	  
+	    var ownerItem = reverseItemRel.getItemsByXPath("/*/*/Result/Item/source_id/Item/owned_by_id/Item");
+		if (ownerItem.getItemCount() >0) {allOwnerNames += ownerItem.getItemByIndex(p).getProperty("keyed_name","--") + ",";}
+	  }
+	}
+  }
+
+  // strip trailing comma from lists
+  var owner_names_array = allOwnerNames.split(",");
+  allItemConfigIds = allItemConfigIds.substring(0,(allItemConfigIds.length-1));
+  var config_id_array = allItemConfigIds.split(",");
+  for (p = 0 ; config_id_array[0] !== "" && p < config_id_array.length ; p++) {
+    var itemGens = reverseItemRel.getItemsByXPath("/*/*/Result/Item/source_id/Item[config_id='"+config_id_array[p]+"']");
+    if (itemGens.getItemCount() >1) {
+	  var highestGen=0;
+	  for (var g=0; g<itemGens.getItemCount(); g++) {
+	    var thisGen = itemGens.getItemByIndex(g).getProperty("generation","");
+		if (Number(thisGen) > highestGen) {
+		  sourceItem = itemGens.getItemByIndex(g);
+		  highestGen = Number(thisGen);
+		}
+	  }
+	}
+	else {
+	  sourceItem = itemGens;
+	}
+
+	var releasedDate = sourceItem.getProperty("release_date","--");
+	if (releasedDate !== "--") {releasedDate = I18Ncntx.ConvertFromNeutral(releasedDate,"date","short_date_time");}
+	  
+	var gridrow =  sourceItem.getProperty("item_number","--");
+	gridrow += "|" + sourceItem.getProperty("classification","--");
+	gridrow += "|" + sourceItem.getProperty("req_rm_title","--");
+	gridrow += "|" + sourceItem.getProperty("state","--");
+	gridrow += "|" + sourceItem.getProperty("major_rev","--");
+		  
+	var newNodeId = reverseItemRel.getProperty("source_id","");
+	  
+	treeGrid1_Control.InsertNewChild( parentNode, newNodeId, gridrow, newNodeId,rowIcon, rowIcon);
+	treeGrid1_Control.setUserData(newNodeId,"gridData_itemID",newNodeId);
+	treeGrid1_Control.setUserData(newNodeId,"gridData_itemtype",sourceItemType );
+	treeGrid1_Control.setUserData(newNodeId,"gridData_class",sourceItem.getProperty("classification","--"));
+  }
+};
+
+//==================================
+fn_GetCheckBoxCellFormat = function (on_off_value)   {
+  var checked_icon = "<img src='icons/item_chk0.gif' />";
+  if (on_off_value === "1") {checked_icon = "<img src='icons/item_chk1.gif' />";}
+  return checked_icon;
+};
+
+//=========================
+fn_setBackgroundColorOfCellsInRow = function (row, colStart, colEnd, bgColor) {
+  for (c = colStart ; c < colEnd +1; c++) {
+    treeGrid1_Control.cells(row,c).setBgColor(bgColor);
+  }
+};
+
+// =============================  Click Handlers ===============================
+treeGrid1_onEditCell = function (type, rowID, column) {
+  return;  // not used
+};
+treeGrid1_onKeyPressed = function (kEv) {
+  return;  // not used
+};
+
+treeGrid1_onGridClick = function (row,c) {
+ 	treeGrid1_settoolbar1_ControlEnabled("view_item", true);
+};
+
+treeGrid1_onToolbarClick = function (item) {
+	treeGrid1_Control.turnEditOff();
+	if (item.getId() == "expandall") {treeGrid1_onExpandAll();}
+	if (item.getId() == "collapseall") {treeGrid1_onCollapseAll();}
+	if (item.getId() == "reload") {window.initTreeGridWithData(true);}
+    if (item.getId() == "open_row_item") {treeGrid1_onOpenRowItem();}
+};
+
+treeGrid1_onGridMenuInit = function (row,col,p) {
+	var mnu = treeGrid1_Control.getMenu();
+	mnu.removeAll();
+	mnu.add("view_item","View Item");
+//	mnu.addSeparator();
+	mnu.show();
+};
+
+treeGrid1_onGridMenuClick = function (menuChoice) {
+  if (menuChoice == "view_item") {treeGrid1_onViewItem();}
+};
+
+treeGrid1_onExpandAll = function () {
+  treeGrid1_Control.ExpandAll();
+  allOpenTreeNodes = treeGrid1_Control.getOpenedItems("|");
+};
+
+treeGrid1_onCollapseAll = function () {
+  treeGrid1_Control.CollapseAll();
+};
+
+treeGrid1_onGridDoubleClick = function (row) {
+  treeGrid1_onViewItem();
+};
+
+treeGrid1_onReloadAll = function () {
+   window.initTreeGridWithData();
+};
+
+treeGrid1_onViewItem = function () {
+  var selectedId = treeGrid1_Control.getSelectedId();
+  if (!selectedId) {return;}
+  var my_itemtype = treeGrid1_Control.getUserData(selectedId,"gridData_itemtype");
+  var my_itemid = treeGrid1_Control.getUserData(selectedId,"gridData_itemID");
+  if (my_itemid === "") {return;}
+  top.aras.uiShowItem(my_itemtype, my_itemid );
+};
+]]></method_code>
+  <method_type>JavaScript</method_type>
+  <name>RequirementWhereUsedGridHandler</name>
+ </Item>
+</AML>

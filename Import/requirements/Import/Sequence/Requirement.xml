@@ -1,0 +1,11 @@
+﻿<AML>
+ <Item type="Sequence" id="520CC7EE55924AF9A632838BCA2919AD" action="add">
+  <classification>/*</classification>
+  <current_value>2</current_value>
+  <name>Requirement</name>
+  <pad_to>9</pad_to>
+  <pad_with>0</pad_with>
+  <prefix>REQ-</prefix>
+  <step>1</step>
+ </Item>
+</AML>

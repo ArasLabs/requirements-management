@@ -1,0 +1,61 @@
+﻿<AML>
+ <Item type="Method" id="3D8E1E7828D54C4FAB9B229C7A39B99C" action="add">
+  <classification>/*</classification>
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA['System.Diagnostics.Debugger.Break()
+'
+' sever side Method: RequirementDoItemRev of Item
+'
+' Trigger: generic method called from client method: RequirementManualRev
+'
+Dim inn As Aras.IOM.Innovator = Me.newInnovator()
+Dim thisErr As Aras.IOM.Item = Nothing
+Dim thisItemType As String = Me.getProperty("item_type","")
+Dim oldGenItemId As String = Me.getProperty("item_id","")
+
+If (thisItemType = "" Or oldGenItemId = "") Then
+   thisErr = inn.newError("Error versioning Item of ItemType '" & thisItemType & "'. Item Type or Item Id not defined.")
+   Return thisErr
+End If
+
+Dim plmIdentity As Aras.Server.Security.Identity = Aras.Server.Security.Identity.GetByName("Aras PLM")
+Dim PermissionWasSet As Boolean = Aras.Server.Security.Permissions.GrantIdentity(plmIdentity)
+
+' Version the affected items
+Dim tempItem As Aras.IOM.Item
+tempItem = Me.newItem()
+tempItem.loadAML("<Item type='" & thisItemType & "' action='version'/>")
+tempItem.setId(oldGenItemId)
+tempItem = tempItem.apply()
+If (tempItem.isError()) Then
+   thisErr = inn.newError("Error versioning Item of ItemType: " & thisItemType & " " & tempItem.getErrorDetail())
+    Goto Return_HandleManualRev
+End If
+Dim NewGenItemId As String = tempItem.getId()
+
+' new version of the document starts at beginning of life cycle and is locked. Unlock it.
+'tempItem.unlockItem()
+'tempItem.setAction("edit")
+
+tempItem.setAction("update")
+tempItem.setAttribute("version","0")
+tempItem.setAttribute("serverEvents","0")
+tempItem.setAttribute("doGetItem","0")
+tempItem.setProperty("effective_date","") ' reset effective dates of new version
+tempItem.setProperty("effective_until_date","")
+tempItem = tempItem.apply()
+
+Return_HandleManualRev:
+If (PermissionWasSet=True) Then
+	Aras.Server.Security.Permissions.RevokeIdentity(plmIdentity)
+End If
+If IsNothing(thisErr) Then
+    Return tempItem
+Else
+    Return thisErr  ' has ERROR
+End If
+]]></method_code>
+  <method_type>VB</method_type>
+  <name>RequirementDoItemRev</name>
+ </Item>
+</AML>

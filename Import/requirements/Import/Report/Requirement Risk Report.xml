@@ -1,0 +1,319 @@
+﻿<AML>
+ <Item type="Report" id="6DF9F66650F448FAA9B5D1C25E69001E" action="add">
+  <label xml:lang="en">Requirement Risk Report</label>
+  <location>client</location>
+  <name>Requirement Risk Report</name>
+  <report_query><![CDATA[<Item type="Requirement" action="get" select="classification, item_number, req_rm_title, req_rm_text, req_priority, req_risk, req_category, state" orderBy="req_risk">
+</Item>]]></report_query>
+  <target>one window</target>
+  <type>itemtype</type>
+  <xsl_stylesheet><![CDATA[<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:user="urn:user-scripts" xmlns:aras="http://www.aras-corp.com">
+  <xsl:output method="html" omit-xml-declaration="yes" standalone="yes" indent="yes"></xsl:output>
+  <xsl:template match="/">
+    <html>
+      <head></head>
+      <style type="text/css" userData="Global">.cellSolid {border-top:1px #000000 solid;border-right:1px #000000 solid;border-bottom:1px #000000 solid;border-left:1px #000000 solid;}
+.cellSolidTopRight {border-top:1px #000000 solid;border-right:1px #000000 solid;}
+.cellSolidTopLeft {border-top:1px #000000 solid;border-left:1px #000000 solid;}
+.cellSolidRightBottom {border-right:1px #000000 solid;border-bottom:1px #000000 solid;}
+.cellSolidBottomLeft {border-bottom:1px #000000 solid;border-left:1px #000000 solid;}
+.cellSolidTop {border-top:1px #000000 solid;}
+.cellSolidRight {border-right:1px #000000 solid;}
+.cellSolidBottom {border-bottom:1px #000000 solid;}
+.cellSolidLeft {border-left:1px #000000 solid;}
+.cellDashed {border-top:1px #666666 dashed;border-right:1px #666666 dashed;border-bottom:1px #666666 dashed;border-left:1px #666666 dashed;}
+.cellDashedTopRight {border-top:1px #666666 dashed;border-right:1px #666666 dashed;}
+.cellDashedTopLeft {border-top:1px #666666 dashed;border-left:1px #666666 dashed;}
+.cellDashedBottomRight {border-bottom:1px #666666 dashed;border-right:1px #666666 dashed;}
+.cellDashedBottomLeft {border-bottom:1px #666666 dashed;border-left:1px #666666 dashed;}
+.cellDashedTop {border-top:1px #666666 dashed;}
+.cellDashedRight {border-right:1px #666666 dashed;}
+.cellDashedBottom {border-bottom:1px #666666 dashed;}
+.cellDashedLeft {border-left:1px #666666 dashed;}
+.cellHeader {background-color:#CCCCCC;border-top:1px #000000 solid;border-right:1px #000000 solid;border-bottom:1px #000000 solid;padding:2px;text-align:center;text-transform:capitalize;text-align:center;font-family:helvetica;font-weight:bold;font-size:8pt;}
+</style>
+      <script>onload = function() {window.resizeTo(900,650);}
+</script>
+      <body topmargin="50" leftmargin="50">
+        <table border="0" cellspacing="0" cellpadding="0" width="875">
+          <tr>
+            <td width="75" uniqueID="ms__id1"></td>
+            <td width="100" uniqueID="ms__id2"></td>
+            <td width="150" uniqueID="ms__id3"></td>
+            <td width="250" uniqueID="ms__id4"></td>
+            <td width="75" uniqueID="ms__id5"></td>
+            <td width="75" uniqueID="ms__id6"></td>
+            <td width="75" uniqueID="ms__id7"></td>
+            <td width="75" uniqueID="ms__id8"></td>
+     </tr>
+          <tr valign="top">
+            <td align="left" uniqueID="ms__id77" colspan="9">
+              <img src="../images/Logos/aras_logo.gif" height="80"></img>
+      </td>
+     </tr>
+          <tr valign="bottom">
+            <td colspan="6" style="font-family:helvetica;font-size:15pt;color:#DA1943;padding:2px;" align="left" uniqueID="ms__id79">Requirements ordered by Risk</td>
+            <td colspan="2" style="font-family:helvetica;font-size:10pt;padding:2px;" align="right" uniqueID="ms__id80">Generated on:              <script>function m00(r, n){r += ""; if (!n) n = 2; while(r.length &lt; n){r = "0" + r;} return r;} var dt = new Date(); var a = top.opener.top.aras; if (a){var s = m00(dt.getUTCFullYear(),4)+"-"+m00((dt.getUTCMonth()+1))+"-"+m00(dt.getUTCDate())+"T"+m00(dt.getUTCHours())+":"+m00(dt.getUTCMinutes())+":"+m00(dt.getUTCSeconds()); s = a.IomInnovator.GetI18NSessionContext().ConvertUtcDateTimeToNeutral(s, "yyyy-MM-ddTHH:mm:ss"); s = a.convertFromNeutral(s, "date", "short_date"); document.write(s);}</script>
+            </td>
+     </tr>
+          <tr valign="top">
+            <td class="cellHeader" uniqueID="ms__id82">Classification</td>
+            <td class="cellHeader" uniqueID="ms__id84">Number</td>
+            <td class="cellHeader" uniqueID="ms__id84">Title</td>
+            <td class="cellHeader" uniqueID="ms__id84">Text</td>
+            <td class="cellHeader" uniqueID="ms__id83">Priority</td>
+            <td class="cellHeader" uniqueID="ms__id85">Risk</td>
+            <td class="cellHeader" uniqueID="ms__id85">Category</td>
+            <td class="cellHeader" uniqueID="ms__id86">Status</td>
+        </tr>
+          <xsl:for-each select="//Item">
+            <xsl:sort select="name" order="ascending" case-order="upper-first" data-type="text"></xsl:sort>
+            <tr valign="center">
+              <td style="font-family:helvetica;font-size:8pt;font-weight:bold;border-left:1px #666666 solid;padding:2px;" class="cellSolidRightBottom" align="left" uniqueID="ms__id90" colspan="" rowspan="" height="" width="">
+                <xsl:value-of select="classification"></xsl:value-of>
+                <xsl:if test="classification='' or not(classification)">
+                  <xsl:text> </xsl:text>
+           </xsl:if>
+          </td>
+              <td style="font-family:helvetica;font-size:8pt;padding:2px;" class="cellSolidRightBottom" align="left" uniqueID="ms__id91">
+                <xsl:value-of select="item_number"></xsl:value-of>
+                <xsl:if test="item_number='' or not(item_number)">
+                  <xsl:text> </xsl:text>
+           </xsl:if>
+          </td>
+              <td style="font-family:helvetica;font-size:8pt;padding:2px;" class="cellSolidRightBottom" align="left" uniqueID="ms__id93">
+                <xsl:value-of select="req_rm_title"></xsl:value-of>
+                <xsl:if test="req_rm_title='' or not(req_rm_title)">
+                  <xsl:text> </xsl:text>
+           </xsl:if>
+          </td>
+              <td style="font-family:helvetica;font-size:8pt;padding:2px;" class="cellSolidRightBottom" align="left" uniqueID="ms__id93">
+                <xsl:value-of select="req_rm_text" disable-output-escaping = "yes"></xsl:value-of>
+                <xsl:if test="req_rm_text='' or not(req_rm_text)">
+                  <xsl:text> </xsl:text>
+           </xsl:if>
+          </td>
+              <td style="font-family:helvetica;font-size:8pt;padding:2px;" class="cellSolidRightBottom" align="left" uniqueID="ms__id93">
+                <xsl:value-of select="req_priority"></xsl:value-of>
+                <xsl:if test="req_priority='' or not(req_priority)">
+                  <xsl:text> </xsl:text>
+           </xsl:if>
+          </td>
+              <td style="font-family:helvetica;font-size:8pt;padding:2px;" class="cellSolidRightBottom" align="left" uniqueID="ms__id92">
+                <xsl:value-of select="req_risk"></xsl:value-of>
+                <xsl:if test="req_risk='' or not(req_risk)">
+                  <xsl:text> </xsl:text>
+           </xsl:if>
+		   </td>
+              <td style="font-family:helvetica;font-size:8pt;padding:2px;" class="cellSolidRightBottom" align="left" uniqueID="ms__id94">
+                <xsl:value-of select="req_category"></xsl:value-of>
+                <xsl:if test="req_category='' or not(req_category)">
+                  <xsl:text> </xsl:text>
+           </xsl:if>
+		   </td>
+              <td style="font-family:helvetica;font-size:8pt;padding:2px;" class="cellSolidRightBottom" align="left" uniqueID="ms__id94">
+                <xsl:value-of select="state"></xsl:value-of>
+                <xsl:if test="state='' or not(state)">
+                  <xsl:text> </xsl:text>
+           </xsl:if>
+          </td>
+         </tr>
+        </xsl:for-each>
+    </table>
+   </body>
+      <script src="../../javascript/PopupMenu.js"></script>
+      <script src="../../javascript/PopupMenu.js"></script>
+      <script src="../../javascript/PopupMenu.js"></script>
+    <script src="../../javascript/PopupMenu.js"></script></html>
+ </xsl:template>
+
+<msxsl:script xmlns:msxsl="urn:schemas-microsoft-com:xslt" language="Jscript" implements-prefix="aras">
+
+function today() {
+  var DATE = new Date();
+  var Y=DATE.getYear();
+  var M=DATE.getMonth()+1;
+  var D=DATE.getDate();
+  var returnDate = M + '/' + D + '/' + Y;
+  return returnDate;
+}
+
+function selectMonth(i) {
+  var arrMonths = new Array("January","February","March","April","May","June","July","August","September","October","November","December");
+  return (arrMonths[i])
+}
+
+function compareDates(date1,date2,d1_offset,d2_offset) {
+  var d1_date = getDateFromString(date1);
+  d1_date = dayAdd(d1_date, d1_offset);
+  var d1 = d1_date.getTime();
+  var d2_date =getDateFromString(date2);
+  d2_date = dayAdd(d2_date, d2_offset);
+  var d2 = d2_date.getTime();
+
+  if (d1==0 || d2==0) {
+    return -1;
+  }
+  else if (d1 &gt; d2 ) {
+    return 1;
+  }
+  return 0;
+}
+
+function stringDateAdd(str_date, numDays, numMonths, numYears) {
+  var date_obj = getDateFromString(str_date);
+  var DATE = dateAdd(date_obj, numDays, numMonths, numYears)
+  var Y=DATE.getYear();
+  var M=DATE.getMonth()+1;
+  var D=DATE.getDate();
+  var returnDate = M + '/' + D + '/' + Y;
+  return returnDate;
+}
+
+function dateAdd(startDate, numDays, numMonths, numYears){
+  var returnDate = new Date(startDate.getTime());
+  var yearsToAdd = numYears;
+  
+  var month = returnDate.getMonth() + numMonths;
+  if (month &gt; 11) {
+    yearsToAdd = Math.floor((month+1)/12);
+    month -= 12*yearsToAdd;
+    yearsToAdd += numYears;
+  }
+
+  returnDate.setMonth(month);
+  returnDate.setFullYear(returnDate.getFullYear() + yearsToAdd);
+  returnDate.setTime(returnDate.getTime()+60000*60*24*numDays);
+  
+  return returnDate;
+}
+
+function yearAdd(startDate, numYears){
+  return dateAdd(startDate,0,0,numYears);
+}
+
+function monthAdd(startDate, numMonths){
+  return dateAdd(startDate,0,numMonths,0);
+}
+
+function dayAdd(startDate, numDays){
+  return dateAdd(startDate,numDays,0,0);
+}
+
+function getDateFromString(StringToDate) {
+  if (!StringToDate){
+    StringToDate = "xx/xx/xx"
+    return StringToDate;
+  }
+  if (StringToDate == ""){
+    StringToDate = "11/11/1111"
+    return StringToDate;
+  }
+
+  var strReturnDate;
+  var arrDate;
+  var arrMonths = new Array("January","February","March","April","May","June","July","August","September","October","November","December");
+  var strMONTH;
+  var Separator = "";
+
+  while(StringToDate.indexOf("st") &gt; -1){
+    StringToDate = StringToDate.replace("st","");
+  }
+
+  while(StringToDate.indexOf("nd") &gt; -1){
+    StringToDate = StringToDate.replace("nd","");
+  }
+
+  while(StringToDate.indexOf("rd") &gt; -1){
+    StringToDate = StringToDate.replace("rd","");
+  }
+
+  while(StringToDate.indexOf("th") &gt; -1){
+    StringToDate = StringToDate.replace("th","");
+  }
+
+  if(StringToDate.indexOf(".") &gt; -1){
+    Separator = ".";
+  }
+
+  if(StringToDate.indexOf("-") &gt; -1){
+    Separator = "-";
+  }
+
+  if(StringToDate.indexOf("/") &gt; -1){
+    Separator = "/";
+  }
+
+  if(StringToDate.indexOf(" ") &gt; -1){
+    Separator = " ";
+  }
+
+  arrDate = StringToDate.split(Separator);
+  StringToDate = "";
+  for(var iSD = 0;iSD &lt; arrDate.length;iSD++){
+    if(arrDate[iSD]!=""){
+    StringToDate += arrDate[iSD] + Separator;
+    }
+  }
+  StringToDate = StringToDate.substring(0,StringToDate.length-1);
+  arrDate = StringToDate.split(Separator);
+
+  if(arrDate.length &lt; 3){
+    return "";
+  }
+
+  // Initial Date Format Assumption is MM DD YY
+  var MONTH = arrDate[0];
+  var DAY = arrDate[1];
+  var YEAR = arrDate[2];
+
+  if(parseFloat(arrDate[0])  &gt;  12){
+    DAY = arrDate[0];
+    MONTH = arrDate[1];
+  }
+  if(parseFloat(DAY) &amp;&amp;  DAY.toString().length==4){
+    YEAR = arrDate[0];
+    DAY = arrDate[2];
+    MONTH = arrDate[1];
+  }
+
+  for(var iSD = 0;iSD &lt; arrMonths.length;iSD++){
+  var ShortMonth = arrMonths[iSD].substring(0,3).toLowerCase();
+  var MonthPosition = StringToDate.indexOf(ShortMonth);
+    if(MonthPosition  &gt;  -1){
+      MONTH = iSD + 1;
+      if(MonthPosition == 0){
+        DAY = arrDate[1];
+        YEAR = arrDate[2];
+      }
+      break;
+    }
+  }
+
+  var strTemp = YEAR.toString();
+  if(strTemp.length==2){
+
+    if(parseFloat(YEAR) &gt; 40){
+      YEAR = "19" + YEAR;
+    }
+    else{
+      YEAR = "20" + YEAR;
+    }
+
+  }
+
+  if(parseInt(MONTH) &lt; 10 &amp;&amp;  MONTH.toString().length &lt; 2){
+    MONTH = "0" + MONTH;
+  }
+  if(parseInt(DAY) &lt; 10 &amp;&amp;  DAY.toString().length &lt; 2){
+    DAY = "0" + DAY;
+  }
+
+  var DATE = new Date(YEAR,MONTH,DAY,0,0,0);
+
+  return DATE;
+}
+</msxsl:script></xsl:stylesheet>
+]]></xsl_stylesheet>
+ </Item>
+</AML>

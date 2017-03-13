@@ -1,0 +1,194 @@
+﻿<AML>
+ <Item type="Life Cycle Map" id="C01E0ED36C424C70A35ED606221ED2F2" action="add">
+  <classification>/*</classification>
+  <description>Default Requirement Life Cycle</description>
+  <name>Requirement</name>
+  <start_state keyed_name="Draft" type="Life Cycle State">39EE7ED7B64C4321A480A750F43A5CA5</start_state>
+  <Relationships>
+   <Item type="Life Cycle State" id="39EE7ED7B64C4321A480A750F43A5CA5" action="add">
+    <classification>/*</classification>
+    <image>../images/icons/20x20/20x15_lifecycle.gif</image>
+    <item_behavior>float</item_behavior>
+    <name>Draft</name>
+    <set_is_released>0</set_is_released>
+    <set_not_lockable>0</set_not_lockable>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="Requirement" type="Life Cycle Map">C01E0ED36C424C70A35ED606221ED2F2</source_id>
+    <state_permission_id keyed_name="New Requirement" type="Permission">EF3EF4A5644744E59DDF1E9441C7A89D</state_permission_id>
+    <x>43</x>
+    <y>50</y>
+   </Item>
+   <Item type="Life Cycle State" id="5027EE75AED148898264403C0E0D5DAE" action="add">
+    <classification>/*</classification>
+    <image>../images/icons/20x20/20x15_lifecycle.gif</image>
+    <item_behavior>float</item_behavior>
+    <name>In Change</name>
+    <set_is_released>1</set_is_released>
+    <set_not_lockable>0</set_not_lockable>
+    <sort_order>512</sort_order>
+    <source_id keyed_name="Requirement" type="Life Cycle Map">C01E0ED36C424C70A35ED606221ED2F2</source_id>
+    <state_permission_id keyed_name="In Change Requirement" type="Permission">B86FEC2C7EBE464EA75DA9CED474ED7A</state_permission_id>
+    <x>379</x>
+    <y>49</y>
+   </Item>
+   <Item type="Life Cycle State" id="EE5670D75C9A47D5BB975173578ADDD5" action="add">
+    <classification>/*</classification>
+    <image>../images/icons/20x20/20x15_lifecycle.gif</image>
+    <item_behavior>float</item_behavior>
+    <name>In Review</name>
+    <set_is_released>0</set_is_released>
+    <set_not_lockable>0</set_not_lockable>
+    <sort_order>256</sort_order>
+    <source_id keyed_name="Requirement" type="Life Cycle Map">C01E0ED36C424C70A35ED606221ED2F2</source_id>
+    <state_permission_id keyed_name="In Review Requirement" type="Permission">DB60272EC74E43369618B5A6F13E9195</state_permission_id>
+    <x>143</x>
+    <y>50</y>
+   </Item>
+   <Item type="Life Cycle State" id="4B338B3DA5684521B45D0BB090493737" action="add">
+    <classification>/*</classification>
+    <image>../images/icons/20x20/20x15_lifecycle.gif</image>
+    <item_behavior>fixed</item_behavior>
+    <name>Released</name>
+    <set_is_released>1</set_is_released>
+    <set_not_lockable>0</set_not_lockable>
+    <sort_order>384</sort_order>
+    <source_id keyed_name="Requirement" type="Life Cycle Map">C01E0ED36C424C70A35ED606221ED2F2</source_id>
+    <state_permission_id keyed_name="Released Requirement" type="Permission">144B69888E8F402892F6E8D1359E5708</state_permission_id>
+    <x>255</x>
+    <y>50</y>
+   </Item>
+   <Item type="Life Cycle State" id="6D530287F0864F2DAA96C0D0ED650C1C" action="add">
+    <classification>/*</classification>
+    <image>../images/icons/20x20/20x15_lifecycle.gif</image>
+    <item_behavior>float</item_behavior>
+    <name>Superseded</name>
+    <set_is_released>0</set_is_released>
+    <set_not_lockable>0</set_not_lockable>
+    <sort_order>640</sort_order>
+    <source_id keyed_name="Requirement" type="Life Cycle Map">C01E0ED36C424C70A35ED606221ED2F2</source_id>
+    <x>483</x>
+    <y>50</y>
+   </Item>
+   <Item type="Life Cycle Transition" id="0614A5C9E8714D1C83DDB6DD43DC73B8" action="add">
+    <classification>/*</classification>
+    <from_state keyed_name="Draft" type="Life Cycle State">39EE7ED7B64C4321A480A750F43A5CA5</from_state>
+    <get_comment>0</get_comment>
+    <role keyed_name="Owner" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>Owner</name>
+     </Item>
+    </role>
+    <segments></segments>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="Requirement" type="Life Cycle Map">C01E0ED36C424C70A35ED606221ED2F2</source_id>
+    <to_state keyed_name="In Review" type="Life Cycle State">EE5670D75C9A47D5BB975173578ADDD5</to_state>
+    <x>24</x>
+    <y>16</y>
+   </Item>
+   <Item type="Life Cycle Transition" id="175D2C788A48437FA80A0E2D204696DA" action="add">
+    <classification>/*</classification>
+    <from_state keyed_name="Draft" type="Life Cycle State">39EE7ED7B64C4321A480A750F43A5CA5</from_state>
+    <get_comment>0</get_comment>
+    <role keyed_name="Owner" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>Owner</name>
+     </Item>
+    </role>
+    <segments>92,6|226,6</segments>
+    <sort_order>1408</sort_order>
+    <source_id keyed_name="Requirement" type="Life Cycle Map">C01E0ED36C424C70A35ED606221ED2F2</source_id>
+    <to_state keyed_name="Released" type="Life Cycle State">4B338B3DA5684521B45D0BB090493737</to_state>
+    <x>-1</x>
+    <y>-1</y>
+   </Item>
+   <Item type="Life Cycle Transition" id="E188693EB3464B05AE287B91AC876BAA" action="add">
+    <classification>/*</classification>
+    <from_state keyed_name="Draft" type="Life Cycle State">39EE7ED7B64C4321A480A750F43A5CA5</from_state>
+    <get_comment>0</get_comment>
+    <sort_order>1536</sort_order>
+    <source_id keyed_name="Requirement" type="Life Cycle Map">C01E0ED36C424C70A35ED606221ED2F2</source_id>
+    <to_state keyed_name="Released" type="Life Cycle State">4B338B3DA5684521B45D0BB090493737</to_state>
+   </Item>
+   <Item type="Life Cycle Transition" id="A0BA761ECBE744B9A98A356B59E7CA89" action="add">
+    <classification>/*</classification>
+    <from_state keyed_name="In Change" type="Life Cycle State">5027EE75AED148898264403C0E0D5DAE</from_state>
+    <get_comment>0</get_comment>
+    <role keyed_name="Owner" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>Owner</name>
+     </Item>
+    </role>
+    <segments>333,20</segments>
+    <sort_order>1280</sort_order>
+    <source_id keyed_name="Requirement" type="Life Cycle Map">C01E0ED36C424C70A35ED606221ED2F2</source_id>
+    <to_state keyed_name="Released" type="Life Cycle State">4B338B3DA5684521B45D0BB090493737</to_state>
+    <x>-136</x>
+    <y>-32</y>
+   </Item>
+   <Item type="Life Cycle Transition" id="1FDE6E6F8D77410FA13D22BA6A2E5579" action="add">
+    <classification>/*</classification>
+    <from_state keyed_name="In Change" type="Life Cycle State">5027EE75AED148898264403C0E0D5DAE</from_state>
+    <get_comment>0</get_comment>
+    <role keyed_name="Owner" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>Owner</name>
+     </Item>
+    </role>
+    <segments></segments>
+    <sort_order>1024</sort_order>
+    <source_id keyed_name="Requirement" type="Life Cycle Map">C01E0ED36C424C70A35ED606221ED2F2</source_id>
+    <to_state keyed_name="Superseded" type="Life Cycle State">6D530287F0864F2DAA96C0D0ED650C1C</to_state>
+    <x>26</x>
+    <y>12</y>
+   </Item>
+   <Item type="Life Cycle Transition" id="5458E98DBC994F459684C7EDCED2CB21" action="add">
+    <classification>/*</classification>
+    <from_state keyed_name="In Review" type="Life Cycle State">EE5670D75C9A47D5BB975173578ADDD5</from_state>
+    <get_comment>0</get_comment>
+    <role keyed_name="Owner" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>Owner</name>
+     </Item>
+    </role>
+    <segments>105,29</segments>
+    <sort_order>1152</sort_order>
+    <source_id keyed_name="Requirement" type="Life Cycle Map">C01E0ED36C424C70A35ED606221ED2F2</source_id>
+    <to_state keyed_name="Draft" type="Life Cycle State">39EE7ED7B64C4321A480A750F43A5CA5</to_state>
+    <x>-58</x>
+    <y>-38</y>
+   </Item>
+   <Item type="Life Cycle Transition" id="61903F3DE12B4BFE8A79E807C4D8CFC9" action="add">
+    <classification>/*</classification>
+    <from_state keyed_name="In Review" type="Life Cycle State">EE5670D75C9A47D5BB975173578ADDD5</from_state>
+    <get_comment>0</get_comment>
+    <role keyed_name="Owner" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>Owner</name>
+     </Item>
+    </role>
+    <segments></segments>
+    <sort_order>256</sort_order>
+    <source_id keyed_name="Requirement" type="Life Cycle Map">C01E0ED36C424C70A35ED606221ED2F2</source_id>
+    <to_state keyed_name="Released" type="Life Cycle State">4B338B3DA5684521B45D0BB090493737</to_state>
+    <x>-1</x>
+    <y>-1</y>
+   </Item>
+  
+   <Item type="Life Cycle Transition" id="14D0AC8F51E44E7DA27F45EA5DD2F23B" action="add">
+    <classification>/*</classification>
+    <from_state keyed_name="Released" type="Life Cycle State">4B338B3DA5684521B45D0BB090493737</from_state>
+    <get_comment>0</get_comment>
+    <role keyed_name="Owner" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>Owner</name>
+     </Item>
+    </role>
+    <segments>326,61</segments>
+    <sort_order>384</sort_order>
+    <source_id keyed_name="Requirement" type="Life Cycle Map">C01E0ED36C424C70A35ED606221ED2F2</source_id>
+    <to_state keyed_name="In Change" type="Life Cycle State">5027EE75AED148898264403C0E0D5DAE</to_state>
+    <x>-1</x>
+    <y>-1</y>
+   </Item></Relationships>
+ </Item>
+</AML>

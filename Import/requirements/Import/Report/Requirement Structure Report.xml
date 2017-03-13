@@ -1,0 +1,273 @@
+﻿<AML>
+ <Item type="Report" id="3BB8ACA20FFA4EBE89EA89D8C944A354" action="add">
+  <description></description>
+  <label xml:lang="en">Requirement Structure Report</label>
+  <location>client</location>
+  <name>Requirement Structure Report</name>
+  <report_query><![CDATA[<Item type="Requirement" action="get" select="item_number,req_rm_title, req_rm_text" id="{@id}">
+ <Relationships>
+  <Item type="Requirement Structure" select="related_id(item_number,req_rm_title)" orderBy="sort_order">
+   <related_id>
+    <Item type="Requirement" select="item_number,req_rm_title, req_rm_text">
+     <Relationships>
+      <Item type="Requirement Structure" select="related_id(item_number,req_rm_title)" orderBy="sort_order">
+       <related_id>
+        <Item type="Requirement" select="item_number,req_rm_title, req_rm_text">
+         <Relationships>
+          <Item type="Requirement Structure" select="related_id(item_number,req_rm_title)" orderBy="sort_order">
+           <related_id>
+            <Item type="Requirement" select="item_number,req_rm_title, req_rm_text">
+             <Relationships>
+              <Item type="Requirement Structure" select="related_id(item_number,req_rm_title)" orderBy="sort_order">
+               <related_id>
+                <Item type="Requirement" select="item_number,req_rm_title, req_rm_text">
+                 <Relationships>
+                  <Item type="Requirement Structure" select="related_id(item_number,req_rm_title)" orderBy="sort_order">
+                   <related_id>
+                    <Item type="Requirement" select="item_number,req_rm_title, req_rm_text"></Item>
+                   </related_id>
+                  </Item>
+                 </Relationships>
+                </Item>
+               </related_id>
+              </Item>
+             </Relationships>
+            </Item>
+           </related_id>
+          </Item>
+         </Relationships>
+        </Item>
+       </related_id>
+      </Item>
+     </Relationships>
+    </Item>
+   </related_id>
+  </Item>
+ </Relationships>
+</Item>]]></report_query>
+  <target>one window</target>
+  <type>item</type>
+  <xsl_stylesheet><![CDATA[<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:aras="http://www.aras-corp.com">
+  <xsl:output method="html" omit-xml-declaration="yes" standalone="yes" indent="yes"></xsl:output>
+  <xsl:template match="/">
+    <html>
+      <head></head>
+      <style type="text/css" userData="Global">
+.cellSolid {text-align:center;border-top:1px #000000 solid;border-right:1px #000000 solid;border-bottom:1px #000000 solid;border-left:1px #000000 solid;}
+.cellSolidTopRight {border-top:1px #000000 solid;border-right:1px #000000 solid;}
+.cellSolidTopLeft {border-top:1px #000000 solid;border-left:1px #000000 solid;}
+.cellSolidRightBottom {border-right:1px #000000 solid;border-bottom:1px #000000 solid;font-family:helvetica;font-size:8pt;}
+.cellSolidBottomLeft {border-bottom:1px #000000 solid;border-left:1px #000000 solid;}
+.cellSolidTop {border-top:1px #000000 solid;}
+.cellSolidRight {border-right:1px #000000 solid;}
+.cellSolidBottom {border-bottom:1px #000000 solid;}
+.cellSolidLeft {border-left:1px #000000 solid;}
+.cellDashed {border-top:1px #666666 dashed;border-right:1px #666666 dashed;border-bottom:1px #666666 dashed;border-left:1px #666666 dashed;}
+.cellDashedTopRight {border-top:1px #666666 dashed;border-right:1px #666666 dashed;}
+.cellDashedTopLeft {border-top:1px #666666 dashed;border-left:1px #666666 dashed;}
+.cellDashedBottomRight {border-bottom:1px #666666 dashed;border-right:1px #666666 dashed;}
+.cellDashedBottomLeft {border-bottom:1px #666666 dashed;border-left:1px #666666 dashed;}
+.cellDashedTop {border-top:1px #666666 dashed;}
+.cellDashedRight {border-right:1px #666666 dashed;}
+.cellDashedBottom {border-bottom:1px #666666 dashed;}
+.cellDashedLeft {border-left:1px #666666 dashed;}
+.cellHeader {background-color:#CCCCCC;border-top:1px #000000 solid;border-right:1px #000000 solid;border-bottom:1px #000000 solid;padding:2px;text-align:center;text-transform:capitalize;text-align:center;font-family:helvetica;font-weight:bold;font-size:8pt;}
+.cellTitle {border-top:1px #000000 solid;border-right:1px #000000 solid;border-left:1px #000000 solid;padding:2px;text-align:center;text-transform:capitalize;text-align:center;font-family:helvetica;font-weight:bold;font-size:8pt;}
+</style>
+      <body topmargin="50" leftmargin="50">
+        <table border="0" cellspacing="0" cellpadding="0" width="750">
+          <tr>
+            <td width="25" uniqueID="ms__id1"></td>
+            <td width="25" uniqueID="ms__id2"></td>
+            <td width="25" uniqueID="ms__id3"></td>
+            <td width="25" uniqueID="ms__id4"></td>
+            <td width="25" uniqueID="ms__id5"></td>
+            <td width="25" uniqueID="ms__id6"></td>
+            <td width="100" uniqueID="ms__id7"></td>
+            <td width="200" uniqueID="ms__id8"></td>
+            <td width="300" uniqueID="ms__id9"></td>
+     </tr>
+          <tr valign="top">
+            <td align="left" uniqueID="ms__id77" colspan="9">
+              <img src="../images/Logos/aras_logo.gif" height="80"></img>
+      </td>
+     </tr>
+          <tr valign="bottom">
+            <td colspan="8" style="font-family:helvetica;font-size:15pt;color:#DA1943;padding:2px;" align="left" uniqueID="ms__id79">Requirement Structure Report</td>
+            <td colspan="2" style="font-family:helvetica;font-size:10pt;padding:2px;" align="right" uniqueID="ms__id80">Generated on:              <script>function m00(r, n){r += ""; if (!n) n = 2; while(r.length &lt; n){r = "0" + r;} return r;} var dt = new Date(); var a = top.opener.top.aras; if (a){var s = m00(dt.getUTCFullYear(),4)+"-"+m00((dt.getUTCMonth()+1))+"-"+m00(dt.getUTCDate())+"T"+m00(dt.getUTCHours())+":"+m00(dt.getUTCMinutes())+":"+m00(dt.getUTCSeconds()); s = a.IomInnovator.GetI18NSessionContext().ConvertUtcDateTimeToNeutral(s, "yyyy-MM-ddTHH:mm:ss"); s = a.convertFromNeutral(s, "date", "short_date"); document.write(s);}</script>
+            </td>
+     </tr>
+          <tr>
+            <td class="cellHeader" colspan="6" uniqueID="ms__id86" style="border-left:1px #000000 solid;">Indenture Level</td>
+            <td class="cellHeader" uniqueID="ms__id89">Number</td>
+            <td class="cellHeader" uniqueID="ms__id91">Titel</td>
+            <td class="cellHeader" uniqueID="ms__id88">Text</td>
+     </tr>
+          <xsl:call-template name="Levels"></xsl:call-template>
+    </table>
+   </body>
+      <script src="../../javascript/PopupMenu.js"></script>
+      <script src="../../javascript/PopupMenu.js"></script>
+      <script src="../../javascript/PopupMenu.js"></script>
+      <script src="../../javascript/PopupMenu.js"></script>
+      <script src="../../javascript/PopupMenu.js"></script>
+      <script src="../../javascript/PopupMenu.js"></script>
+    </html>
+ </xsl:template>
+ <!-- Find the Requirment Level and pass as the 'Depth' param to the next template -->
+  <xsl:template name="Levels">
+    <xsl:for-each select="//Item[@type='Requirement']">
+      <xsl:apply-templates mode="RequirementStructure" select=".">
+        <xsl:with-param name="Depth" select="count(ancestor::Relationships)"></xsl:with-param>
+   </xsl:apply-templates>
+  </xsl:for-each>
+ </xsl:template>
+  <xsl:template mode="RequirementStructure" match="//Item[@type='Requirement']">
+    <xsl:param name="Depth"></xsl:param>
+    <tr>
+      <xsl:choose>
+        <xsl:when test="$Depth = '0'">
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id92" align="center" style="border-left:1px #000000 solid;">
+            <xsl:value-of select="$Depth"></xsl:value-of>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id93">
+            <xsl:text> </xsl:text>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id94">
+            <xsl:text> </xsl:text>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id96">
+            <xsl:text> </xsl:text>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id196">
+            <xsl:text> </xsl:text>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id60">
+            <xsl:text> </xsl:text>
+     </td>
+    </xsl:when>
+        <xsl:when test="$Depth = '1'">
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id97" style="border-left:1px #000000 solid;">
+            <xsl:text> </xsl:text>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id98" align="center">
+            <xsl:value-of select="$Depth"></xsl:value-of>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id99">
+            <xsl:text> </xsl:text>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id100">
+            <xsl:text> </xsl:text>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id101">
+            <xsl:text> </xsl:text>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id61">
+            <xsl:text> </xsl:text>
+     </td>
+    </xsl:when>
+        <xsl:when test="$Depth = '2'">
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id102" style="border-left:1px #000000 solid;">
+            <xsl:text> </xsl:text>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id103">
+            <xsl:text> </xsl:text>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id104" align="center">
+            <xsl:value-of select="$Depth"></xsl:value-of>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id105">
+            <xsl:text> </xsl:text>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id198">
+            <xsl:text> </xsl:text>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id62">
+            <xsl:text> </xsl:text>
+     </td>
+    </xsl:when>
+        <xsl:when test="$Depth = '3'">
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id107" style="border-left:1px #000000 solid;">
+            <xsl:text> </xsl:text>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id108">
+            <xsl:text> </xsl:text>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id109">
+            <xsl:text> </xsl:text>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id110" align="center">
+            <xsl:value-of select="$Depth"></xsl:value-of>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id111">
+            <xsl:text> </xsl:text>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id63">
+            <xsl:text> </xsl:text>
+     </td>
+    </xsl:when>
+        <xsl:when test="$Depth = '4'">
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id112" style="border-left:1px #000000 solid;">
+            <xsl:text> </xsl:text>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id113">
+            <xsl:text> </xsl:text>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id114">
+            <xsl:text> </xsl:text>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id115">
+            <xsl:text> </xsl:text>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id116" align="center">
+            <xsl:value-of select="$Depth"></xsl:value-of>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id64">
+            <xsl:text> </xsl:text>
+     </td>
+    </xsl:when>
+        <xsl:when test="$Depth = '5'">
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id201" style="border-left:1px #000000 solid;">
+            <xsl:text> </xsl:text>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id202">
+            <xsl:text> </xsl:text>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id203">
+            <xsl:text> </xsl:text>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id204">
+            <xsl:text> </xsl:text>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id206">
+            <xsl:text> </xsl:text>
+     </td>
+          <td class="cellSolidRightBottom" width="20pt" uniqueID="ms__id205" align="center">
+            <xsl:value-of select="$Depth"></xsl:value-of>
+     </td>
+    </xsl:when>
+   </xsl:choose>
+      <td class="cellSolidRightBottom" style="font-family:helvetica; font-size:8pt; padding:2px;" uniqueID="ms__id28">
+        <xsl:value-of select="item_number"></xsl:value-of>
+        <xsl:if test="item_number='' or not(item_number)">
+          <xsl:text> </xsl:text>
+        </xsl:if>
+   </td>
+      <td class="cellSolidRightBottom" style="font-family:helvetica; font-size:8pt; padding:2px;" uniqueID="ms__id27">
+        <xsl:value-of select="req_rm_title"></xsl:value-of>
+        <xsl:if test="req_rm_title='' or not(req_rm_title)">
+          <xsl:text> </xsl:text>
+        </xsl:if>
+   </td>
+      <td class="cellSolidRightBottom" style="font-family:helvetica; font-size:8pt; padding:2px;" uniqueID="ms__id27">
+        <xsl:value-of select="req_rm_text" disable-output-escaping = "yes"></xsl:value-of>
+        <xsl:if test="req_rm_text='' or not(req_rm_text)">
+          <xsl:text> </xsl:text>
+        </xsl:if>
+   </td>
+  </tr>
+ </xsl:template>
+
+</xsl:stylesheet>]]></xsl_stylesheet>
+ </Item>
+</AML>

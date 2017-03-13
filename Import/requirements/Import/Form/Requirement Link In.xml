@@ -1,0 +1,42 @@
+﻿<AML>
+ <Item type="Form" id="B7CD9F31EBEF4F0999A71956EE6D23E0" action="add">
+  <classification>/*</classification>
+  <name>Requirement Link In</name>
+  <stylesheet><![CDATA[../styles/default.css]]></stylesheet>
+  <Relationships>
+   <Item type="Body" id="673CC5370E004B9195B41B4887D68147" action="add">
+    <bg_attach>scroll</bg_attach>
+    <bg_color>#FFFFFF</bg_color>
+    <bg_image>../images/Backgrounds/wvleft.gif</bg_image>
+    <bg_repeat>no-repeat</bg_repeat>
+    <classification>/*</classification>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="Requirement Link In" type="Form">B7CD9F31EBEF4F0999A71956EE6D23E0</source_id>
+    <Relationships>
+     <Item type="Field" id="460BC3719BB64FA185F35A14490B903C" action="add">
+      <bg_color>#FFFFFF</bg_color>
+      <classification>/*</classification>
+      <field_type>html</field_type>
+      <html_code><![CDATA[<span id='ITEM_INFO_INTERNAL_SPAN'/>
+<script>
+  populate_ITEM_INFO_INTERNAL_SPAN = function()
+  {
+    document.getElementById('ITEM_INFO_INTERNAL_SPAN').innerHTML = top.aras.uiGetItemInfoTable(document.itemType);
+  }
+  window.attachEvent('onload', populate_ITEM_INFO_INTERNAL_SPAN);
+</script>]]></html_code>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <list_no_blank>0</list_no_blank>
+      <name>item_info</name>
+      <sort_order>128</sort_order>
+      <source_id keyed_name="673CC5370E004B9195B41B4887D68147" type="Body">673CC5370E004B9195B41B4887D68147</source_id>
+      <tab_stop>0</tab_stop>
+      <x>0</x>
+      <y>0</y>
+     </Item>
+    </Relationships>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

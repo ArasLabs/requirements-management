@@ -1,0 +1,56 @@
+﻿<AML>
+ <Item type="Permission" id="B86FEC2C7EBE464EA75DA9CED474ED7A" action="add">
+  <is_private>0</is_private>
+  <name>In Change Requirement</name>
+  <Relationships>
+   <Item type="Access" id="8ABE6CE5A2D74575BBE69F6FC66A3A05" action="add">
+    <can_change_access>1</can_change_access>
+    <can_delete>1</can_delete>
+    <can_discover>1</can_discover>
+    <can_get>1</can_get>
+    <can_update>1</can_update>
+    <classification>/*</classification>
+    <related_id keyed_name="Creator" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>Creator</name>
+     </Item>
+    </related_id>
+    <show_permissions_warning>0</show_permissions_warning>
+    <sort_order>512</sort_order>
+    <source_id keyed_name="In Change Requirement" type="Permission">B86FEC2C7EBE464EA75DA9CED474ED7A</source_id>
+   </Item>
+   <Item type="Access" id="6A82BA3A4BB24DFF958F5397749F85D1" action="add">
+    <can_change_access>0</can_change_access>
+    <can_delete>0</can_delete>
+    <can_discover>1</can_discover>
+    <can_get>1</can_get>
+    <can_update>1</can_update>
+    <classification>/*</classification>
+    <related_id keyed_name="Manager" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>Manager</name>
+     </Item>
+    </related_id>
+    <show_permissions_warning>0</show_permissions_warning>
+    <sort_order>384</sort_order>
+    <source_id keyed_name="In Change Requirement" type="Permission">B86FEC2C7EBE464EA75DA9CED474ED7A</source_id>
+   </Item>
+   <Item type="Access" id="9D9A18C827C844B2871BDEC3AF051C15" action="add">
+    <can_change_access>1</can_change_access>
+    <can_delete>1</can_delete>
+    <can_discover>1</can_discover>
+    <can_get>1</can_get>
+    <can_update>1</can_update>
+    <classification>/*</classification>
+    <related_id keyed_name="Owner" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>Owner</name>
+     </Item>
+    </related_id>
+    <show_permissions_warning>0</show_permissions_warning>
+    <sort_order>256</sort_order>
+    <source_id keyed_name="In Change Requirement" type="Permission">B86FEC2C7EBE464EA75DA9CED474ED7A</source_id>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

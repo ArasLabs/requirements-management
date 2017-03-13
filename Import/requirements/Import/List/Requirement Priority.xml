@@ -1,0 +1,37 @@
+﻿<AML>
+ <Item type="List" id="7CB36D0D94E04AD585CFA281CC40EA5A" action="add">
+  <classification>/*</classification>
+  <description>Requirement Priority</description>
+  <name>Requirement Priority</name>
+  <Relationships>
+   <Item type="Value" id="7BC5D7EBE4D94A8897FE4701B53BD96F" action="add">
+    <classification>/*</classification>
+    <label xml:lang="en">Critical</label>
+    <sort_order>1</sort_order>
+    <source_id keyed_name="Requirement Priority" type="List">7CB36D0D94E04AD585CFA281CC40EA5A</source_id>
+    <value>Critical</value>
+   </Item>
+   <Item type="Value" id="1B7C798F227342D682EA271CBDD9BA1D" action="add">
+    <classification>/*</classification>
+    <label xml:lang="en">High</label>
+    <sort_order>2</sort_order>
+    <source_id keyed_name="Requirement Priority" type="List">7CB36D0D94E04AD585CFA281CC40EA5A</source_id>
+    <value>High</value>
+   </Item>
+   <Item type="Value" id="34418E1D5EE941D4BE9A4903A16A1645" action="add">
+    <classification>/*</classification>
+    <label xml:lang="en">Low</label>
+    <sort_order>4</sort_order>
+    <source_id keyed_name="Requirement Priority" type="List">7CB36D0D94E04AD585CFA281CC40EA5A</source_id>
+    <value>Low</value>
+   </Item>
+  
+   <Item type="Value" id="A8C90B05374F4D76AD6F15ABB4AB8C67" action="add">
+    <classification>/*</classification>
+    <label xml:lang="en">Medium</label>
+    <sort_order>3</sort_order>
+    <source_id keyed_name="Requirement Priority" type="List">7CB36D0D94E04AD585CFA281CC40EA5A</source_id>
+    <value>Medium</value>
+   </Item></Relationships>
+ </Item>
+</AML>

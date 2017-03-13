@@ -1,0 +1,56 @@
+﻿<AML>
+ <Item type="Permission" id="EF3EF4A5644744E59DDF1E9441C7A89D" action="add">
+  <is_private>0</is_private>
+  <name>New Requirement</name>
+  <Relationships>
+   <Item type="Access" id="BE8164BDCCE54D1D911B8AAFECA6E890" action="add">
+    <can_change_access>1</can_change_access>
+    <can_delete>1</can_delete>
+    <can_discover>1</can_discover>
+    <can_get>1</can_get>
+    <can_update>1</can_update>
+    <classification>/*</classification>
+    <related_id keyed_name="Creator" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>Creator</name>
+     </Item>
+    </related_id>
+    <show_permissions_warning>0</show_permissions_warning>
+    <sort_order>512</sort_order>
+    <source_id keyed_name="New Requirement" type="Permission">EF3EF4A5644744E59DDF1E9441C7A89D</source_id>
+   </Item>
+  
+   <Item type="Access" id="BAEFCDABC8B1471B879A431181125784" action="add">
+    <can_change_access>0</can_change_access>
+    <can_delete>0</can_delete>
+    <can_discover>1</can_discover>
+    <can_get>1</can_get>
+    <can_update>1</can_update>
+    <classification>/*</classification>
+    <related_id keyed_name="Manager" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>Manager</name>
+     </Item>
+    </related_id>
+    <show_permissions_warning>0</show_permissions_warning>
+    <sort_order>384</sort_order>
+    <source_id keyed_name="New Requirement" type="Permission">EF3EF4A5644744E59DDF1E9441C7A89D</source_id>
+   </Item>
+   <Item type="Access" id="69A28C6623854CF5B5EEFC048ECBBF91" action="add">
+    <can_change_access>1</can_change_access>
+    <can_delete>1</can_delete>
+    <can_discover>1</can_discover>
+    <can_get>1</can_get>
+    <can_update>1</can_update>
+    <classification>/*</classification>
+    <related_id keyed_name="Owner" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>Owner</name>
+     </Item>
+    </related_id>
+    <show_permissions_warning>0</show_permissions_warning>
+    <sort_order>256</sort_order>
+    <source_id keyed_name="New Requirement" type="Permission">EF3EF4A5644744E59DDF1E9441C7A89D</source_id>
+   </Item></Relationships>
+ </Item>
+</AML>

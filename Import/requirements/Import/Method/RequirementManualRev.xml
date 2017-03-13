@@ -1,0 +1,86 @@
+﻿<AML>
+ <Item type="Method" id="3B65BB9738A648C79A8D1F82B3CE4FEE" action="add">
+  <classification>/*</classification>
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[//
+// client side Method: RequirementManualRev
+//
+// called from ActionS:
+//    plme Requirement Action
+//
+// checks owned_by_id. If current user is a member
+//
+// call generic server side method to do the versioning (as "Aras PLM")
+// 
+
+//debugger;
+// ---------- helper functions ------------
+fn_isCurrUserMemberOfIdentityId = function (identity_to_check) {
+  if (identity_to_check === "") {return false;}
+    
+  var sessionIdentitites_array = top.aras.getIdentityList().split(",");
+  // now we have all identities the current user (session) is member of
+  // scan if given identity is in the list - if yes, return true
+  for (var i=0;i<sessionIdentitites_array.length;i++) {
+    if (identity_to_check == sessionIdentitites_array[i]) {return true;}
+  }
+  return false;
+};
+
+// ---------------------
+var thisItemType = this.getAttribute("type","");
+var thisItemId = this.getAttribute("id","");
+var thisItem = top.aras.newIOMItem(thisItemType,"get");
+thisItem.setAttribute("select","keyed_name,state,owned_by_id,requires_workflow");
+thisItem.setID(thisItemId);
+thisItem = thisItem.apply();
+
+var thisItemStatus = thisItem.getProperty("state","");
+varitemReleasedStatusNames = "Released";
+
+switch (thisItemType) {
+  case "Requirement":
+    itemReleasedStatusNames = "Released";
+	break;
+}
+
+if (thisItem.isLocked() !==  0) {
+  top.aras.AlertError("Item is locked. To create a new revision it must be unlocked. Please unlock and try again.");
+  return;
+}
+if (itemReleasedStatusNames.indexOf(thisItemStatus) < 0) {
+  top.aras.AlertError("Cannot create new Revision. Status of '" + thisItem.getProperty("keyed_name","--")  + "' must be one of these -> '" + itemReleasedStatusNames + "'");
+  return;
+}
+/*if (thisItem.getProperty("requires_workflow","1") === "1") {
+  top.aras.AlertError("Manual Revisions not allowed. Flag 'requires_workflow' is set for '" + thisItem.getProperty("keyed_name","--") + "'");
+  return;
+}*/
+// owner must be set for manual promotions
+var ownerId = thisItem.getProperty("owned_by_id","");
+if ( ownerId === "") {
+  top.aras.AlertError("Owner not set for item '" + thisItem.getProperty("keyed_name","--") + "' ! Manual promotions require an Owner to be set.");
+  return;
+}
+if (!fn_isCurrUserMemberOfIdentityId(ownerId)) {
+  top.aras.AlertError("Missing permission to version '" + thisItem.getProperty("keyed_name","--") + "'. You must be a member of Owner.");
+  return;
+}
+
+// call server method to do the versioning
+var inn = this.getInnovator();
+var body = "";
+body+= "<item_id>" + thisItemId + "</item_id>";
+body+= "<item_type>" + thisItemType + "</item_type>";
+var result = inn.applyMethod("RequirementDoItemRev",body);
+if (result.isError()) {
+   top.aras.AlertError("Manual Revisioning failed! " + result.getErrorString());
+   return result;
+}
+return result;
+
+]]></method_code>
+  <method_type>JavaScript</method_type>
+  <name>RequirementManualRev</name>
+ </Item>
+</AML>

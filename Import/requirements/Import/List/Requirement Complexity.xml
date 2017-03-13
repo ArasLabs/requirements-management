@@ -1,0 +1,30 @@
+﻿<AML>
+ <Item type="List" id="BF06352C887F46D38685F947A6939C9B" action="add">
+  <classification>/*</classification>
+  <description>Requirement Complexity</description>
+  <name>Requirement Complexity</name>
+  <Relationships>
+   <Item type="Value" id="39DF753E145147808E337CD498EF94D5" action="add">
+    <classification>/*</classification>
+    <label xml:lang="en">High</label>
+    <sort_order>1</sort_order>
+    <source_id keyed_name="Requirement Complexity" type="List">BF06352C887F46D38685F947A6939C9B</source_id>
+    <value>High</value>
+   </Item>
+   <Item type="Value" id="2E5D9D454C8B41AC91FE97BBAD4E2E22" action="add">
+    <classification>/*</classification>
+    <label xml:lang="en">Low</label>
+    <sort_order>3</sort_order>
+    <source_id keyed_name="Requirement Complexity" type="List">BF06352C887F46D38685F947A6939C9B</source_id>
+    <value>Low</value>
+   </Item>
+  
+   <Item type="Value" id="39FA4FF438754185BE15D3974E6112DD" action="add">
+    <classification>/*</classification>
+    <label xml:lang="en">Medium</label>
+    <sort_order>2</sort_order>
+    <source_id keyed_name="Requirement Complexity" type="List">BF06352C887F46D38685F947A6939C9B</source_id>
+    <value>Medium</value>
+   </Item></Relationships>
+ </Item>
+</AML>

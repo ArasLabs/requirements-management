@@ -1,0 +1,3 @@
+<imports>
+  <package name="usb.solution.requirements" path="requirements\Import" />
+</imports>

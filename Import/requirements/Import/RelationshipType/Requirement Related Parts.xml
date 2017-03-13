@@ -1,0 +1,54 @@
+﻿<AML>
+ <Item type="RelationshipType" id="4AB57835DBD04084BB15D13A176409B4" action="add" dependencyLevel="0">
+  <auto_search>1</auto_search>
+  <behavior>float</behavior>
+  <classification>/*</classification>
+  <copy_permissions>0</copy_permissions>
+  <create_related>0</create_related>
+  <hide_in_all>0</hide_in_all>
+  <inc_rel_key_name>1</inc_rel_key_name>
+  <inc_related_key_name>1</inc_related_key_name>
+  <is_list_type>0</is_list_type>
+  <label xml:lang="en">Related Parts</label>
+  <name>Requirement Related Parts</name>
+  <new_show_related>0</new_show_related>
+  <related_notnull>0</related_notnull>
+  <related_option>2</related_option>
+  <relationship_id keyed_name="Requirement Related Parts" type="ItemType" name="Requirement Related Parts">
+   <Item type="ItemType" id="99B1723335204C82B9231F294F0B2C8F" action="add">
+    <allow_private_permission>1</allow_private_permission>
+    <auto_search>0</auto_search>
+    <enforce_discovery>0</enforce_discovery>
+    <hide_where_used>0</hide_where_used>
+    <implementation_type>table</implementation_type>
+    <instance_data>REQUIREMENT_RELATED_PARTS</instance_data>
+    <is_dependent>0</is_dependent>
+    <is_relationship>1</is_relationship>
+    <is_versionable>0</is_versionable>
+    <manual_versioning>0</manual_versioning>
+    <name>Requirement Related Parts</name>
+    <revisions keyed_name="Default" type="Revision">7FE395DD8B9F4E1090756A34B733D75E</revisions>
+    <show_parameters_tab>1</show_parameters_tab>
+    <unlock_on_logout>0</unlock_on_logout>
+    <use_src_access>1</use_src_access>
+    </Item>
+  </relationship_id>
+  <sort_order>50</sort_order>
+  <source_id keyed_name="Requirement" type="ItemType" name="Requirement">036DB34801A24ACF8DD39DFDBE8F2909</source_id>
+  <Relationships>
+   <Item type="Relationship View" id="749A1994437A413A9C01A29E523C79B5" action="add">
+    <classification>/*</classification>
+    <form keyed_name="RequirementRelatedPartsGrid" type="Form">0D0939F4907547A2B078A49A3AC5B41B</form>
+    <related_id keyed_name="World" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>World</name>
+     </Item>
+    </related_id>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="Requirement Related Parts" type="RelationshipType">4AB57835DBD04084BB15D13A176409B4</source_id>
+   </Item>
+  </Relationships>
+ </Item>
+ <Item type="View" action="delete" where="source_id='99B1723335204C82B9231F294F0B2C8F'"></Item>
+ <Item type="Form" action="delete" where="name='Requirement Related Parts'"></Item>
+</AML>

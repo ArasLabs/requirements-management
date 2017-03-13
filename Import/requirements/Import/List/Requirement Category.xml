@@ -1,0 +1,72 @@
+﻿<AML>
+ <Item type="List" id="7292B67F7F124666A09CB55090756C46" action="add">
+  <classification>/*</classification>
+  <description>Requirement Category</description>
+  <name>Requirement Category</name>
+  <Relationships>
+   <Item type="Value" id="63BE510FE0DF4B988E55BDA5979BB17B" action="add">
+    <classification>/*</classification>
+    <label xml:lang="en">Configuration</label>
+    <sort_order>7</sort_order>
+    <source_id keyed_name="Requirement Category" type="List">7292B67F7F124666A09CB55090756C46</source_id>
+    <value>Configuration</value>
+   </Item>
+   <Item type="Value" id="B89D20A2C2D446158EE1189FAD470E59" action="add">
+    <classification>/*</classification>
+    <label xml:lang="en">Documentation</label>
+    <sort_order>9</sort_order>
+    <source_id keyed_name="Requirement Category" type="List">7292B67F7F124666A09CB55090756C46</source_id>
+    <value>Documentation</value>
+   </Item>
+  
+   <Item type="Value" id="DC46D19CF7AC4898869AEB70B22B5114" action="add">
+    <classification>/*</classification>
+    <label xml:lang="en">Faciltities</label>
+    <sort_order>8</sort_order>
+    <source_id keyed_name="Requirement Category" type="List">7292B67F7F124666A09CB55090756C46</source_id>
+    <value>Faciltities</value>
+   </Item>
+   <Item type="Value" id="A4EE8850047144C59C973B2CE3BCCAEF" action="add">
+    <classification>/*</classification>
+    <label xml:lang="en">Interface</label>
+    <sort_order>6</sort_order>
+    <source_id keyed_name="Requirement Category" type="List">7292B67F7F124666A09CB55090756C46</source_id>
+    <value>Interface</value>
+   </Item>
+   <Item type="Value" id="4C8CCDE604704135A902992076803B00" action="add">
+    <classification>/*</classification>
+    <label xml:lang="en">Maintenance</label>
+    <sort_order>4</sort_order>
+    <source_id keyed_name="Requirement Category" type="List">7292B67F7F124666A09CB55090756C46</source_id>
+    <value>Maintenance</value>
+   </Item>
+   <Item type="Value" id="32BB9A7BCABE4DE08B2006479B2CE052" action="add">
+    <classification>/*</classification>
+    <label xml:lang="en">Monitoring</label>
+    <sort_order>2</sort_order>
+    <source_id keyed_name="Requirement Category" type="List">7292B67F7F124666A09CB55090756C46</source_id>
+    <value>Monitoring</value>
+   </Item>
+   <Item type="Value" id="3ECB549AB1C544D38A5FE4B6F9647C66" action="add">
+    <classification>/*</classification>
+    <label xml:lang="en">Operations</label>
+    <sort_order>1</sort_order>
+    <source_id keyed_name="Requirement Category" type="List">7292B67F7F124666A09CB55090756C46</source_id>
+    <value>Operations</value>
+   </Item>
+   <Item type="Value" id="08F94208F54A4B9CB05C2781B52DC3EB" action="add">
+    <classification>/*</classification>
+    <label xml:lang="en">Security and Safety</label>
+    <sort_order>5</sort_order>
+    <source_id keyed_name="Requirement Category" type="List">7292B67F7F124666A09CB55090756C46</source_id>
+    <value>Security and Safety</value>
+   </Item>
+   <Item type="Value" id="3A47D20E3C5546F7B7C9C2A80B188768" action="add">
+    <classification>/*</classification>
+    <label xml:lang="en">Support</label>
+    <sort_order>3</sort_order>
+    <source_id keyed_name="Requirement Category" type="List">7292B67F7F124666A09CB55090756C46</source_id>
+    <value>Support</value>
+   </Item></Relationships>
+ </Item>
+</AML>
